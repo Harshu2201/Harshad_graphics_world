@@ -2,11 +2,11 @@ import { motion } from "framer-motion";
 import { Instagram, Users, Heart, MessageCircle } from "lucide-react";
 
 const socials = [
-  { name: "Instagram Personal", handle: "@harshad", followers: "2.5K", posts: "120", color: "from-neon-pink to-neon-purple" },
-  { name: "MESWCOE E-Cell", handle: "@ecell_meswcoe", followers: "5.2K", posts: "340", color: "from-neon-blue to-neon-cyan" },
-  { name: "Xplorevo Pvt Ltd", handle: "@xplorevo", followers: "8.1K", posts: "450", color: "from-neon-purple to-neon-blue" },
-  { name: "Xplorevo Tech Network", handle: "@xtn_official", followers: "3.7K", posts: "210", color: "from-neon-cyan to-neon-blue" },
-  { name: "MESWCOE EIC", handle: "@eic_meswcoe", followers: "1.8K", posts: "95", color: "from-neon-pink to-neon-blue" },
+  { name: "Instagram Personal", handle: "@harshad", followers: "2.5K", posts: "120", color: "from-neon-pink to-neon-purple", link: "https://www.instagram.com/harshad.h.pakhale.01" },
+  { name: "MESWCOE E-Cell", handle: "@meswcoe_e_cell", followers: "5.2K", posts: "340", color: "from-neon-blue to-neon-cyan", link: "https://www.instagram.com/meswcoe_e_cell" },
+  { name: "Xplorevo Pvt Ltd", handle: "@xplorevo_official", followers: "8.1K", posts: "450", color: "from-neon-purple to-neon-blue", link: "https://www.instagram.com/xplorevo_official" },
+  { name: "XTN Network", handle: "@xplorevo_tech_network", followers: "3.7K", posts: "210", color: "from-neon-cyan to-neon-blue", link: "https://www.instagram.com/xplorevo_tech_network" },
+  { name: "MESWCOE EIC", handle: "@meswcoe_eic", followers: "1.8K", posts: "95", color: "from-neon-pink to-neon-blue", link: "https://www.instagram.com/meswcoe_eic" },
 ];
 
 const SocialSection = () => {
@@ -24,16 +24,18 @@ const SocialSection = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {socials.map((social, i) => (
-            <motion.div
+            <motion.a
               key={social.name}
+              href={social.link}
+              target="_blank"
+              rel="noopener noreferrer"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
               whileHover={{ scale: 1.05 }}
-              className="glass-card rounded-2xl p-6 cursor-pointer group relative overflow-hidden"
+              className="glass-card rounded-2xl p-6 cursor-pointer group relative overflow-hidden block"
             >
-              {/* Shine effect */}
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                 style={{ background: "linear-gradient(105deg, transparent 40%, hsla(var(--neon-blue) / 0.1) 45%, hsla(var(--neon-blue) / 0.2) 50%, hsla(var(--neon-blue) / 0.1) 55%, transparent 60%)" }} />
 
@@ -60,7 +62,7 @@ const SocialSection = () => {
                   <MessageCircle className="w-4 h-4 text-neon-purple" />
                 </div>
               </div>
-            </motion.div>
+            </motion.a>
           ))}
         </div>
       </div>

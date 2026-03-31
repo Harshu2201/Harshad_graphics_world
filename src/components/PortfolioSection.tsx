@@ -1,20 +1,25 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
-import p1 from "@/assets/portfolio-1.jpg";
-import p2 from "@/assets/portfolio-2.jpg";
-import p3 from "@/assets/portfolio-3.jpg";
-import p4 from "@/assets/portfolio-4.jpg";
-import p5 from "@/assets/portfolio-5.jpg";
-import p6 from "@/assets/portfolio-6.jpg";
 
 const portfolioItems = [
-  { src: p1, title: "Cinematic Poster", category: "Posters", h: "row-span-2" },
-  { src: p2, title: "Brand Identity", category: "Branding", h: "" },
-  { src: p3, title: "Social Media Creatives", category: "Social Media Creatives", h: "" },
-  { src: p4, title: "AI Cyberpunk Art", category: "AI Generated", h: "row-span-2" },
-  { src: p5, title: "Magazine Cover", category: "Posters", h: "row-span-2" },
-  { src: p6, title: "Event Poster", category: "Social Media Creatives", h: "" },
+  { src: "https://drive.google.com/uc?export=view&id=1-UGPuAl_Ej_BYqeh9LzFS6Hw5JZsGiDk", title: "Cinematic Poster", category: "Posters", h: "row-span-2" },
+  { src: "https://drive.google.com/uc?export=view&id=1lBxkVTENVoulOJMWSB4MBZR-acVTn9wv", title: "Brand Identity", category: "Branding", h: "" },
+  { src: "https://drive.google.com/uc?export=view&id=1tKAjFcUlXetvjWMlVO9C7d5BoUXVtWKa", title: "Social Creative", category: "Social Media Creatives", h: "" },
+  { src: "https://drive.google.com/uc?export=view&id=1-da91ToQBEjqiH36lclmZTV7qq9RwjOL", title: "AI Art", category: "AI Generated", h: "row-span-2" },
+  { src: "https://drive.google.com/uc?export=view&id=1ORn-4pxNVJJ-SNgJwsUMAnYqTtO2e9kA", title: "Creative Poster", category: "Posters", h: "row-span-2" },
+  { src: "https://drive.google.com/uc?export=view&id=1KgoIx0koGu0g2IT76IQvdk3C206tK1hg", title: "Event Design", category: "Social Media Creatives", h: "" },
+  { src: "https://drive.google.com/uc?export=view&id=1yLbECGP8R7khLlAhw5q8BZcr8FLpy5To", title: "Visual Story", category: "Branding", h: "" },
+  { src: "https://drive.google.com/uc?export=view&id=1jRigCPXgCcif5qnQsmPAr1GiDHFsLJWt", title: "AI Cyberpunk", category: "AI Generated", h: "row-span-2" },
+  { src: "https://drive.google.com/uc?export=view&id=1uYEY1HiyoyLAvN25OyjOqYO6DHdth4yT", title: "Magazine Cover", category: "Posters", h: "" },
+  { src: "https://drive.google.com/uc?export=view&id=1xpu9EfyIGdY2g6752MQ-sNsDDveKuR3i", title: "Brand Collateral", category: "Branding", h: "" },
+  { src: "https://drive.google.com/uc?export=view&id=1zmCRpCYcaVXdl0K4rrPMsSbaPlCW_l6s", title: "Social Post", category: "Social Media Creatives", h: "row-span-2" },
+  { src: "https://drive.google.com/uc?export=view&id=1lwbT06lEoByn-PI2o94-JnaMWXXZV5Wg", title: "AI Render", category: "AI Generated", h: "" },
+  { src: "https://drive.google.com/uc?export=view&id=1--_NuECbvnjFkUs-bW1R4tTHW5hXbGSE", title: "Film Poster", category: "Posters", h: "" },
+  { src: "https://drive.google.com/uc?export=view&id=1wO10B9gguq115ri9Q753ihAIKpoHGv8N", title: "Creative Campaign", category: "Social Media Creatives", h: "row-span-2" },
+  { src: "https://drive.google.com/uc?export=view&id=1f-VLpubg72IzJhZErv6CLmsuwq0x8tsH", title: "Brand Concept", category: "Branding", h: "" },
+  { src: "https://drive.google.com/uc?export=view&id=1kNw8zJ5DDUOg4XqBt_arl-RCs2NWojNS", title: "AI Vision", category: "AI Generated", h: "" },
+  { src: "https://drive.google.com/uc?export=view&id=1f4oZ_WWBa97gjxqLsc90awBQZDNd7Eg8b4", title: "Visual Design", category: "Posters", h: "" },
 ];
 
 const categories = ["All", "Posters", "Branding", "Social Media Creatives", "AI Generated"];
@@ -67,7 +72,7 @@ const PortfolioSection = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 auto-rows-[200px]">
           {filtered.map((item, i) => (
             <motion.div
-              key={item.title}
+              key={item.src}
               layout
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
