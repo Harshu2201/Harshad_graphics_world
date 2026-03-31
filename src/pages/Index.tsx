@@ -10,6 +10,7 @@ import SocialSection from "@/components/SocialSection";
 import ExperienceSection from "@/components/ExperienceSection";
 import ContactSection from "@/components/ContactSection";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import MusicToggle from "@/components/MusicToggle";
 
 const Index = () => {
   const [loading, setLoading] = useState(true);
@@ -28,6 +29,7 @@ const Index = () => {
       <ExperienceSection />
       <ContactSection />
       <WhatsAppButton />
+      <MusicToggle />
 
       {/* Footer */}
       <footer className="border-t border-border py-8 text-center">
