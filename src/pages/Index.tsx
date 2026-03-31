@@ -10,6 +10,7 @@ import SocialSection from "@/components/SocialSection";
 import ExperienceSection from "@/components/ExperienceSection";
 import ContactSection from "@/components/ContactSection";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import MusicToggle from "@/components/MusicToggle";
 
 const Index = () => {
   const [loading, setLoading] = useState(true);
