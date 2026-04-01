@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import profileImg from "@/assets/profile.jpg";
 import { Menu, X } from "lucide-react";
 
 const links = [
