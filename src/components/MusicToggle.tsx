@@ -4,24 +4,23 @@ import { motion } from "framer-motion";
 
 const MusicToggle = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState(true);
 
   useEffect(() => {
     const audio = new Audio("/music/bg-music.mp3");
     audio.loop = true;
-    audio.volume = 0.15;
+    audio.volume = 0.12;
     audioRef.current = audio;
 
-    // Try autoplay
     const tryPlay = () => {
-      audio.play().then(() => setPlaying(true)).catch(() => {});
+      audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
     };
 
     tryPlay();
 
     const handleInteraction = () => {
-      if (!playing) {
-        audio.play().then(() => setPlaying(true)).catch(() => {});
+      if (audioRef.current && audioRef.current.paused) {
+        audioRef.current.play().then(() => setPlaying(true)).catch(() => {});
       }
       document.removeEventListener("click", handleInteraction);
     };
@@ -37,6 +36,7 @@ const MusicToggle = () => {
     if (!audioRef.current) return;
     if (playing) {
       audioRef.current.pause();
+      speechSynthesis.cancel();
       setPlaying(false);
     } else {
       audioRef.current.play().then(() => setPlaying(true)).catch(() => {});
@@ -50,7 +50,7 @@ const MusicToggle = () => {
       transition={{ delay: 2 }}
       onClick={toggle}
       className="fixed bottom-6 left-6 z-50 w-12 h-12 rounded-full glass-card flex items-center justify-center text-foreground hover:text-neon-blue transition-colors duration-300 neon-glow"
-      aria-label={playing ? "Mute music" : "Unmute music"}
+      aria-label={playing ? "Mute" : "Unmute"}
     >
       {playing ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
     </motion.button>

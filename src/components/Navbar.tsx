@@ -28,7 +28,10 @@ const Navbar = () => {
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${scrolled ? "glass-card" : ""}`}
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <a href="#hero" className="font-heading text-2xl gradient-text">HP</a>
+        <a href="#hero" className="flex items-center gap-2">
+          <img src={profileImg} alt="Harshad Pakhale" className="w-9 h-9 rounded-full object-cover border-2 border-neon-blue/50" />
+          <span className="font-heading text-xl gradient-text hidden sm:inline">Harshad</span>
+        </a>
         
         {/* Desktop */}
         <div className="hidden md:flex gap-8">
