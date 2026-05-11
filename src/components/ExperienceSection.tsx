@@ -1,47 +1,86 @@
 import { motion } from "framer-motion";
+import { Building2, Rocket, Palette, Bot } from "lucide-react";
 
 const experiences = [
-  { role: "Graphics Designer", org: "2+ Years Experience", period: "2023 - Present", desc: "Creating cinematic visuals, branding, and social media content." },
-  { role: "AI Content Creator", org: "Freelance & Projects", period: "2024 - Present", desc: "Leveraging Midjourney, Veo 3, and prompt engineering for AI-generated art." },
-  { role: "Social Media Manager", org: "E-Cell MESWCOE", period: "2024 - 2025", desc: "Managing content strategy and visual identity for E-Cell." },
-  { role: "Design Lead", org: "Xplorevo Pvt Ltd & XTN", period: "2024 - Present", desc: "Leading visual design for Xplorevo and Xplorevo Tech Network." },
-  { role: "EIC Member", org: "EIC 2024-25", period: "2024 - 2025", desc: "Contributing to the Entrepreneurship and Innovation Cell." },
+  {
+    icon: Building2,
+    role: "Design & Strategy Lead",
+    org: "Xplorevo Pvt Ltd",
+    period: "2024 — Present",
+    desc: "Driving brand visuals, content systems, and AI-assisted execution for Xplorevo and XTN.",
+    tags: ["Branding", "AI Content", "Strategy"],
+  },
+  {
+    icon: Rocket,
+    role: "Startup Collaborations",
+    org: "Multiple Early-Stage Ventures",
+    period: "2023 — Present",
+    desc: "Partnering with founders on positioning, creative, and AI-driven go-to-market execution.",
+    tags: ["GTM", "Positioning", "Growth"],
+  },
+  {
+    icon: Palette,
+    role: "Freelance Creative Projects",
+    org: "Independent",
+    period: "2023 — Present",
+    desc: "End-to-end visual identity, social design, and presentation systems for brands and creators.",
+    tags: ["Canva", "Identity", "Social"],
+  },
+  {
+    icon: Bot,
+    role: "AI-driven Execution Work",
+    org: "AI Generalist Practice",
+    period: "2024 — Present",
+    desc: "Designing AI workflows, content engines, and automation systems using modern AI tools.",
+    tags: ["ChatGPT", "Automation", "Workflows"],
+  },
 ];
 
 const ExperienceSection = () => {
   return (
     <section id="experience" className="relative py-24">
       <div className="section-container">
-        <motion.h2
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="section-title gradient-text mb-16"
+          className="mb-16 max-w-3xl"
         >
-          Experience
-        </motion.h2>
+          <span className="text-xs tracking-[0.3em] uppercase text-neon-blue font-body">Experience</span>
+          <h2 className="section-title gradient-text mt-2">Selected work & roles.</h2>
+        </motion.div>
 
-        <div className="relative">
-          {/* Timeline line */}
-          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-neon-blue via-neon-purple to-neon-pink" />
-
-          {experiences.map((exp, i) => (
+        <div className="grid md:grid-cols-2 gap-6">
+          {experiences.map((e, i) => (
             <motion.div
-              key={exp.role}
-              initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              key={e.role}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.15 }}
-              className={`relative flex ${i % 2 === 0 ? "md:justify-start" : "md:justify-end"} mb-12 pl-12 md:pl-0`}
+              transition={{ delay: i * 0.1 }}
+              whileHover={{ y: -6 }}
+              className="glass-card rounded-2xl p-6 group"
             >
-              {/* Dot */}
-              <div className="absolute left-2.5 md:left-1/2 md:-translate-x-1/2 top-6 w-3 h-3 rounded-full bg-neon-blue neon-glow z-10" />
-
-              <div className={`glass-card rounded-xl p-6 md:w-[45%] group hover:neon-glow transition-shadow duration-300`}>
-                <span className="text-xs text-neon-blue font-body tracking-wider">{exp.period}</span>
-                <h3 className="font-heading text-2xl text-foreground mt-1">{exp.role}</h3>
-                <p className="text-sm text-neon-purple font-body font-medium">{exp.org}</p>
-                <p className="text-sm text-muted-foreground font-body mt-2">{exp.desc}</p>
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-neon-blue/20 to-neon-purple/20 border border-border flex items-center justify-center">
+                  <e.icon className="w-5 h-5 text-neon-blue group-hover:text-neon-pink transition-colors" />
+                </div>
+                <span className="text-[10px] tracking-[0.25em] uppercase text-muted-foreground font-body">
+                  {e.period}
+                </span>
+              </div>
+              <h3 className="font-heading text-2xl text-foreground tracking-wider">{e.role}</h3>
+              <p className="text-sm text-neon-purple font-body font-medium mb-3">{e.org}</p>
+              <p className="text-sm text-foreground/70 font-body mb-4">{e.desc}</p>
+              <div className="flex flex-wrap gap-2">
+                {e.tags.map((t) => (
+                  <span
+                    key={t}
+                    className="px-2.5 py-1 rounded-full text-[10px] uppercase tracking-wider font-body bg-muted/40 border border-border text-foreground/70"
+                  >
+                    {t}
+                  </span>
+                ))}
               </div>
             </motion.div>
           ))}

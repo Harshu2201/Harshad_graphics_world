@@ -1,6 +1,13 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Send, Mail, MessageSquare } from "lucide-react";
+import { Send, Mail, MessageSquare, Linkedin, Instagram } from "lucide-react";
+
+const channels = [
+  { icon: Mail, label: "Email", value: "harshup2205@gmail.com", href: "mailto:harshup2205@gmail.com" },
+  { icon: Linkedin, label: "LinkedIn", value: "/in/harshad-pakhale-221hp", href: "https://www.linkedin.com/in/harshad-pakhale-221hp/" },
+  { icon: Instagram, label: "Instagram", value: "@harshad.h.pakhale.01", href: "https://www.instagram.com/harshad.h.pakhale.01/" },
+  { icon: MessageSquare, label: "WhatsApp", value: "+91 90675 72205", href: "https://wa.me/919067572205" },
+];
 
 const ContactSection = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
@@ -15,54 +22,47 @@ const ContactSection = () => {
   return (
     <section id="contact" className="relative py-24">
       <div className="section-container">
-        <motion.h2
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="section-title gradient-text mb-4"
+          className="mb-12 max-w-3xl"
         >
-          Get In Touch
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-lg text-neon-purple font-body italic mb-12"
-        >
-          "Let's Create Something Cinematic Together"
-        </motion.p>
+          <span className="text-xs tracking-[0.3em] uppercase text-neon-blue font-body">Contact</span>
+          <h2 className="section-title gradient-text mt-2">Let's build something modern.</h2>
+          <p className="text-foreground/70 font-body mt-3">
+            Open to AI consulting, creative partnerships, and startup collaborations.
+          </p>
+        </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-12">
-          {/* Info */}
+        <div className="grid md:grid-cols-2 gap-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="space-y-6"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-4 content-start"
           >
-            <a href="mailto:harshup2205@gmail.com" className="glass-card rounded-xl p-5 flex items-center gap-4 group hover:neon-glow transition-shadow duration-300">
-              <Mail className="w-6 h-6 text-neon-blue group-hover:text-neon-pink transition-colors" />
-              <div>
-                <p className="text-xs text-muted-foreground font-body">Email</p>
-                <p className="text-foreground font-body">harshup2205@gmail.com</p>
-              </div>
-            </a>
-            <a href="https://wa.me/919067572205" target="_blank" rel="noopener noreferrer" className="glass-card rounded-xl p-5 flex items-center gap-4 group hover:neon-glow transition-shadow duration-300">
-              <MessageSquare className="w-6 h-6 text-neon-blue group-hover:text-neon-pink transition-colors" />
-              <div>
-                <p className="text-xs text-muted-foreground font-body">WhatsApp</p>
-                <p className="text-foreground font-body">+91 9067572205</p>
-              </div>
-            </a>
+            {channels.map((c) => (
+              <a
+                key={c.label}
+                href={c.href}
+                target={c.href.startsWith("http") ? "_blank" : undefined}
+                rel="noopener noreferrer"
+                className="glass-card rounded-xl p-5 group hover:neon-glow transition-shadow duration-300"
+              >
+                <c.icon className="w-5 h-5 text-neon-blue group-hover:text-neon-pink transition-colors mb-3" />
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-body">{c.label}</p>
+                <p className="text-sm text-foreground font-body mt-1 break-all">{c.value}</p>
+              </a>
+            ))}
           </motion.div>
 
-          {/* Form */}
           <motion.form
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             onSubmit={handleSubmit}
-            className="glass-card rounded-xl p-6 space-y-4"
+            className="glass-card rounded-2xl p-6 space-y-4"
           >
             <input
               type="text"
@@ -70,7 +70,7 @@ const ContactSection = () => {
               required
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="w-full bg-muted/50 border border-border rounded-lg px-4 py-3 text-foreground font-body placeholder:text-muted-foreground focus:outline-none focus:border-neon-blue transition-colors"
+              className="w-full bg-muted/40 border border-border rounded-lg px-4 py-3 text-foreground font-body placeholder:text-muted-foreground focus:outline-none focus:border-neon-blue transition-colors"
             />
             <input
               type="email"
@@ -78,18 +78,18 @@ const ContactSection = () => {
               required
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="w-full bg-muted/50 border border-border rounded-lg px-4 py-3 text-foreground font-body placeholder:text-muted-foreground focus:outline-none focus:border-neon-blue transition-colors"
+              className="w-full bg-muted/40 border border-border rounded-lg px-4 py-3 text-foreground font-body placeholder:text-muted-foreground focus:outline-none focus:border-neon-blue transition-colors"
             />
             <textarea
-              placeholder="Your Message"
+              placeholder="Tell me about your idea or business challenge…"
               required
-              rows={4}
+              rows={5}
               value={form.message}
               onChange={(e) => setForm({ ...form, message: e.target.value })}
-              className="w-full bg-muted/50 border border-border rounded-lg px-4 py-3 text-foreground font-body placeholder:text-muted-foreground focus:outline-none focus:border-neon-blue transition-colors resize-none"
+              className="w-full bg-muted/40 border border-border rounded-lg px-4 py-3 text-foreground font-body placeholder:text-muted-foreground focus:outline-none focus:border-neon-blue transition-colors resize-none"
             />
             <button type="submit" className="btn-neon text-primary-foreground flex items-center gap-2 w-full justify-center">
-              <Send className="w-4 h-4" /> Send to WhatsApp
+              <Send className="w-4 h-4" /> Send Message
             </button>
           </motion.form>
         </div>
