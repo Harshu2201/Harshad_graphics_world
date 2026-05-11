@@ -4,11 +4,16 @@ import Particles from "@/components/Particles";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
+import SkillsSection from "@/components/SkillsSection";
+import ServicesSection from "@/components/ServicesSection";
 import PortfolioSection from "@/components/PortfolioSection";
 import ProjectsSection from "@/components/ProjectsSection";
-import SocialSection from "@/components/SocialSection";
 import ExperienceSection from "@/components/ExperienceSection";
+import WhyMeSection from "@/components/WhyMeSection";
+import VisionSection from "@/components/VisionSection";
+import SocialSection from "@/components/SocialSection";
 import ContactSection from "@/components/ContactSection";
+import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import MusicToggle from "@/components/MusicToggle";
 
@@ -23,20 +28,18 @@ const Index = () => {
       <Navbar />
       <HeroSection />
       <AboutSection />
+      <SkillsSection />
+      <ServicesSection />
       <PortfolioSection />
       <ProjectsSection />
-      <SocialSection />
       <ExperienceSection />
+      <WhyMeSection />
+      <VisionSection />
+      <SocialSection />
       <ContactSection />
+      <Footer />
       <WhatsAppButton />
       <MusicToggle />
-
-      {/* Footer */}
-      <footer className="border-t border-border py-8 text-center">
-        <p className="text-sm text-muted-foreground font-body">
-          © 2025 Harshad Pakhale. Crafted with passion.
-        </p>
-      </footer>
     </div>
   );
 };
