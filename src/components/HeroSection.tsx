@@ -1,90 +1,123 @@
 import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Sparkles, Brain, Rocket } from "lucide-react";
 
 const HeroSection = () => {
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Animated gradient background */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-background" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsla(var(--neon-purple)/0.15),transparent_60%)]" />
         <motion.div
-          className="absolute top-1/4 -left-32 w-96 h-96 rounded-full opacity-20 blur-[100px]"
+          className="absolute top-1/4 -left-32 w-[28rem] h-[28rem] rounded-full opacity-25 blur-[120px]"
           style={{ background: "hsl(var(--neon-blue))" }}
-          animate={{ x: [0, 50, 0], y: [0, 30, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 -right-32 w-96 h-96 rounded-full opacity-20 blur-[100px]"
-          style={{ background: "hsl(var(--neon-purple))" }}
-          animate={{ x: [0, -50, 0], y: [0, -30, 0] }}
+          animate={{ x: [0, 60, 0], y: [0, 40, 0] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-10 blur-[120px]"
-          style={{ background: "hsl(var(--neon-pink))" }}
-          animate={{ scale: [1, 1.2, 1] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-0 -right-32 w-[28rem] h-[28rem] rounded-full opacity-25 blur-[120px]"
+          style={{ background: "hsl(var(--neon-purple))" }}
+          animate={{ x: [0, -60, 0], y: [0, -40, 0] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        />
+        {/* Grid overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.07]"
+          style={{
+            backgroundImage:
+              "linear-gradient(hsl(var(--neon-blue)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--neon-blue)) 1px, transparent 1px)",
+            backgroundSize: "48px 48px",
+            maskImage: "radial-gradient(ellipse at center, black 40%, transparent 80%)",
+          }}
         />
       </div>
 
-      <div className="relative z-10 text-center px-6 max-w-5xl">
-        <motion.p
+      <div className="relative z-10 text-center px-6 max-w-6xl">
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-sm md:text-base tracking-[0.3em] text-muted-foreground font-body mb-6 uppercase"
+          transition={{ delay: 0.1 }}
+          className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-1.5 mb-8"
         >
-          Creative Portfolio
-        </motion.p>
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-blue opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-neon-blue" />
+          </span>
+          <span className="text-xs tracking-[0.25em] uppercase font-body text-foreground/80">
+            AI Generalist · Creative Strategist
+          </span>
+        </motion.div>
 
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-          className="text-6xl md:text-8xl lg:text-9xl font-heading leading-none mb-4"
+          transition={{ delay: 0.3, duration: 0.8 }}
+          className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-heading leading-[0.95] mb-6"
         >
-          <span className="gradient-text neon-text">Mr. Harshad</span>
-          <br />
-          <span className="text-foreground">Pakhale</span>
+          <span className="text-foreground">Harshad</span>{" "}
+          <span className="gradient-text neon-text">Pakhale</span>
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="text-lg md:text-xl text-muted-foreground font-body font-light mb-3"
+          transition={{ delay: 0.6 }}
+          className="text-base md:text-xl text-foreground/70 font-body font-light max-w-2xl mx-auto mb-4"
         >
-          Graphic Designer | AI Creator | Visual Storyteller
+          Building modern business solutions using{" "}
+          <span className="text-neon-blue">AI</span>,{" "}
+          <span className="text-neon-purple">creativity</span> &{" "}
+          <span className="text-neon-pink">execution</span>.
         </motion.p>
 
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9 }}
-          className="text-sm md:text-base text-neon-purple font-body italic mb-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className="text-sm text-muted-foreground font-body italic mb-10"
         >
-          "Transforming Ideas into Cinematic Visual Experiences"
+          AI Generalist · Business Problem Solver · Startup Operator
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.1 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          transition={{ delay: 1 }}
+          className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
         >
-          <a href="#portfolio" className="btn-neon text-primary-foreground">View My Work</a>
-          <a href="#contact" className="btn-outline-neon">Let's Collaborate</a>
+          <a href="#contact" className="btn-neon text-primary-foreground inline-flex items-center justify-center gap-2">
+            <Sparkles className="w-4 h-4" /> Let's Build with AI
+          </a>
+          <a href="#services" className="btn-outline-neon">Explore Services</a>
+        </motion.div>
+
+        {/* Stat strip */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2 }}
+          className="grid grid-cols-3 gap-4 max-w-2xl mx-auto"
+        >
+          {[
+            { icon: Brain, label: "AI Tools", value: "10+" },
+            { icon: Rocket, label: "Projects", value: "30+" },
+            { icon: Sparkles, label: "Years", value: "2+" },
+          ].map((s) => (
+            <div key={s.label} className="glass-card rounded-xl p-4">
+              <s.icon className="w-5 h-5 text-neon-blue mx-auto mb-1" />
+              <div className="font-heading text-2xl gradient-text">{s.value}</div>
+              <div className="text-[10px] tracking-widest uppercase text-muted-foreground font-body">{s.label}</div>
+            </div>
+          ))}
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        transition={{ delay: 1.6 }}
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1"
       >
-        <span className="text-xs tracking-widest text-muted-foreground font-body">SCROLL</span>
+        <span className="text-[10px] tracking-widest text-muted-foreground font-body">SCROLL</span>
         <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
           <ChevronDown className="w-5 h-5 text-neon-blue" />
         </motion.div>
