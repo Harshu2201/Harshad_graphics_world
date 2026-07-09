@@ -50,18 +50,11 @@ const SocialSection = () => {
                 </div>
               </div>
 
-              <div className="flex gap-4">
-                <div className="flex items-center gap-1.5 text-sm text-muted-foreground font-body">
-                  <Users className="w-4 h-4 text-neon-blue" />
-                  <span>{social.followers}</span>
-                </div>
-                <div className="flex items-center gap-1.5 text-sm text-muted-foreground font-body">
-                  <Heart className="w-4 h-4 text-neon-pink" />
-                  <span>{social.posts}</span>
-                </div>
-                <div className="flex items-center gap-1.5 text-sm text-muted-foreground font-body">
-                  <MessageCircle className="w-4 h-4 text-neon-purple" />
-                </div>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground font-body">
+                <Users className="w-4 h-4 text-neon-blue" />
+                <span>{social.role}</span>
+                <Heart className="w-4 h-4 text-neon-pink ml-auto" />
+                <MessageCircle className="w-4 h-4 text-neon-purple" />
               </div>
             </motion.a>
           ))}
