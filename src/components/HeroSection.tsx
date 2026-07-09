@@ -32,6 +32,10 @@ const HeroSection = () => {
         />
       </div>
 
+      {/* 3D scene overlay */}
+      <Hero3D />
+
+
       <div className="relative z-10 text-center px-6 max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
