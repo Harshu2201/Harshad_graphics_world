@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { ChevronDown, Sparkles, Brain, Rocket } from "lucide-react";
+import { ChevronDown, Sparkles, Film, Target, Bot } from "lucide-react";
+import Hero3D from "./Hero3D";
 
 const HeroSection = () => {
   return (
@@ -31,6 +32,10 @@ const HeroSection = () => {
         />
       </div>
 
+      {/* 3D scene overlay */}
+      <Hero3D />
+
+
       <div className="relative z-10 text-center px-6 max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -43,7 +48,7 @@ const HeroSection = () => {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-neon-blue" />
           </span>
           <span className="text-xs tracking-[0.25em] uppercase font-body text-foreground/80">
-            AI Generalist · Creative Strategist
+            AI Movie Creator · Social Media Manager
           </span>
         </motion.div>
 
@@ -63,10 +68,9 @@ const HeroSection = () => {
           transition={{ delay: 0.6 }}
           className="text-base md:text-xl text-foreground/70 font-body font-light max-w-2xl mx-auto mb-4"
         >
-          Building modern business solutions using{" "}
-          <span className="text-neon-blue">AI</span>,{" "}
-          <span className="text-neon-purple">creativity</span> &{" "}
-          <span className="text-neon-pink">execution</span>.
+          Cinematic <span className="text-neon-blue">AI videos</span>, high-performance{" "}
+          <span className="text-neon-purple">social content</span> &{" "}
+          <span className="text-neon-pink">Meta Ads</span> that convert.
         </motion.p>
 
         <motion.p
@@ -75,7 +79,7 @@ const HeroSection = () => {
           transition={{ delay: 0.8 }}
           className="text-sm text-muted-foreground font-body italic mb-10"
         >
-          AI Generalist · Business Problem Solver · Startup Operator
+          AI Movie Creator · Social Media Manager · Meta Ads Strategist
         </motion.p>
 
         <motion.div
@@ -98,9 +102,9 @@ const HeroSection = () => {
           className="grid grid-cols-3 gap-4 max-w-2xl mx-auto"
         >
           {[
-            { icon: Brain, label: "AI Tools", value: "10+" },
-            { icon: Rocket, label: "Projects", value: "30+" },
-            { icon: Sparkles, label: "Years", value: "2+" },
+            { icon: Film, label: "AI Films", value: "40+" },
+            { icon: Bot, label: "Brands Managed", value: "6" },
+            { icon: Target, label: "Meta Ads ROAS", value: "5x+" },
           ].map((s) => (
             <div key={s.label} className="glass-card rounded-xl p-4">
               <s.icon className="w-5 h-5 text-neon-blue mx-auto mb-1" />

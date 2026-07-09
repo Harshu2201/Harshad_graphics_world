@@ -2,11 +2,12 @@ import { motion } from "framer-motion";
 import { Instagram, Users, Heart, MessageCircle } from "lucide-react";
 
 const socials = [
-  { name: "Instagram Personal", handle: "@harshad", followers: "2.5K", posts: "120", color: "from-neon-pink to-neon-purple", link: "https://www.instagram.com/harshad.h.pakhale.01" },
-  { name: "MESWCOE E-Cell", handle: "@meswcoe_e_cell", followers: "5.2K", posts: "340", color: "from-neon-blue to-neon-cyan", link: "https://www.instagram.com/meswcoe_e_cell" },
-  { name: "Xplorevo Pvt Ltd", handle: "@xplorevo_official", followers: "8.1K", posts: "450", color: "from-neon-purple to-neon-blue", link: "https://www.instagram.com/xplorevo_official" },
-  { name: "XTN Network", handle: "@xplorevo_tech_network", followers: "3.7K", posts: "210", color: "from-neon-cyan to-neon-blue", link: "https://www.instagram.com/xplorevo_tech_network" },
-  { name: "MESWCOE EIC", handle: "@meswcoe_eic", followers: "1.8K", posts: "95", color: "from-neon-pink to-neon-blue", link: "https://www.instagram.com/meswcoe_eic" },
+  { name: "Campus Counsel", handle: "@campus_counsel_", role: "Ed-Tech Community", color: "from-neon-blue to-neon-purple", link: "https://www.instagram.com/campus_counsel_/" },
+  { name: "XPLOREVO", handle: "@xplorevo_official", role: "Startup Media", color: "from-neon-purple to-neon-blue", link: "https://www.instagram.com/xplorevo_official/" },
+  { name: "XTN Network", handle: "@xplorevo_tech_network", role: "Tech Network", color: "from-neon-cyan to-neon-blue", link: "https://www.instagram.com/xplorevo_tech_network/" },
+  { name: "MESWCOE E-Cell", handle: "@meswcoe_e_cell", role: "Entrepreneurship Cell", color: "from-neon-blue to-neon-cyan", link: "https://www.instagram.com/meswcoe_e_cell/" },
+  { name: "MESWCOE EIC", handle: "@meswcoe_eic", role: "Innovation Council", color: "from-neon-pink to-neon-blue", link: "https://www.instagram.com/meswcoe_eic/" },
+  { name: "Personal", handle: "@harshad.h.pakhale.01", role: "Creator", color: "from-neon-pink to-neon-purple", link: "https://www.instagram.com/harshad.h.pakhale.01/" },
 ];
 
 const SocialSection = () => {
@@ -49,18 +50,11 @@ const SocialSection = () => {
                 </div>
               </div>
 
-              <div className="flex gap-4">
-                <div className="flex items-center gap-1.5 text-sm text-muted-foreground font-body">
-                  <Users className="w-4 h-4 text-neon-blue" />
-                  <span>{social.followers}</span>
-                </div>
-                <div className="flex items-center gap-1.5 text-sm text-muted-foreground font-body">
-                  <Heart className="w-4 h-4 text-neon-pink" />
-                  <span>{social.posts}</span>
-                </div>
-                <div className="flex items-center gap-1.5 text-sm text-muted-foreground font-body">
-                  <MessageCircle className="w-4 h-4 text-neon-purple" />
-                </div>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground font-body">
+                <Users className="w-4 h-4 text-neon-blue" />
+                <span>{social.role}</span>
+                <Heart className="w-4 h-4 text-neon-pink ml-auto" />
+                <MessageCircle className="w-4 h-4 text-neon-purple" />
               </div>
             </motion.a>
           ))}

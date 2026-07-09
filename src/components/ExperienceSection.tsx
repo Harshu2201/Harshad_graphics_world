@@ -1,38 +1,38 @@
 import { motion } from "framer-motion";
-import { Building2, Rocket, Palette, Bot } from "lucide-react";
+import { Film, Megaphone, Target, Bot } from "lucide-react";
 
 const experiences = [
   {
-    icon: Building2,
-    role: "Design & Strategy Lead",
-    org: "Xplorevo Pvt Ltd",
+    icon: Film,
+    role: "AI Movie Creator & Video Generator",
+    org: "Independent Studio",
     period: "2024 — Present",
-    desc: "Driving brand visuals, content systems, and AI-assisted execution for Xplorevo and XTN.",
-    tags: ["Branding", "AI Content", "Strategy"],
-  },
-  {
-    icon: Rocket,
-    role: "Startup Collaborations",
-    org: "Multiple Early-Stage Ventures",
-    period: "2023 — Present",
-    desc: "Partnering with founders on positioning, creative, and AI-driven go-to-market execution.",
-    tags: ["GTM", "Positioning", "Growth"],
-  },
-  {
-    icon: Palette,
-    role: "Freelance Creative Projects",
-    org: "Independent",
-    period: "2023 — Present",
-    desc: "End-to-end visual identity, social design, and presentation systems for brands and creators.",
-    tags: ["Canva", "Identity", "Social"],
+    desc: "Directing cinematic short films end-to-end using Runway, Kling, Sora-style pipelines — from concept to final grade.",
+    tags: ["AI Video", "Runway", "Kling", "Prompt Direction"],
   },
   {
     icon: Bot,
-    role: "AI-driven Execution Work",
-    org: "AI Generalist Practice",
-    period: "2024 — Present",
-    desc: "Designing AI workflows, content engines, and automation systems using modern AI tools.",
-    tags: ["ChatGPT", "Automation", "Workflows"],
+    role: "Social Media Manager (AI-First)",
+    org: "6 Brand Accounts",
+    period: "2023 — Present",
+    desc: "Running AI-driven content engines across 6 Instagram brands — strategy, creatives, calendars & analytics.",
+    tags: ["Content Strategy", "AI Workflows", "Growth"],
+  },
+  {
+    icon: Target,
+    role: "Meta Ads Strategist",
+    org: "Freelance & Startup Retainers",
+    period: "2023 — Present",
+    desc: "Full-funnel Meta Ads: audience research, creative testing, pixel setup and scaling ROAS on Instagram & Facebook.",
+    tags: ["Meta Ads", "Retargeting", "Creative Testing"],
+  },
+  {
+    icon: Megaphone,
+    role: "Business Meta Suite Specialist",
+    org: "Multi-brand Operations",
+    period: "2023 — Present",
+    desc: "Managing accounts, catalogs, pixels & conversions API inside Meta Business Suite for scaled brand operations.",
+    tags: ["Meta Suite", "Pixel", "CAPI", "Catalogs"],
   },
 ];
 
