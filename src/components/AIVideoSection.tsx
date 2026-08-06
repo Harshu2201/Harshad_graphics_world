@@ -1,75 +1,92 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
-import { ChevronLeft, ChevronRight, Film, Sparkles } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Film as FilmIcon, Play, Sparkles } from "lucide-react";
+import { FILM_CATEGORIES, featuredFilm, films, type Film } from "@/data/films";
+import VideoLightbox from "./VideoLightbox";
 import InstagramEmbed from "./InstagramEmbed";
+import { track } from "@/lib/analytics";
 
-const FEATURED = "https://www.instagram.com/p/DaAyuGRoqFb/";
-
-const GALLERY = [
-  "https://www.instagram.com/p/DaSf25HIYcc/",
-  "https://www.instagram.com/p/C8tl7cWoH4e/",
-  "https://www.instagram.com/p/DaSlrNtlJF8/",
-  "https://www.instagram.com/p/DaXvvBJCvo9/",
-  "https://www.instagram.com/p/DaNbvIgj-s_/",
-  "https://www.instagram.com/p/DaIR0sBim57/",
-  "https://www.instagram.com/p/DZryk3NtKYV/",
-  "https://www.instagram.com/p/DaFqao-E-Ui/",
-  "https://www.instagram.com/p/DZ7VzNLAAba/",
-  "https://www.instagram.com/p/DZubIZIjj60/",
-];
+const FILTERS = ["All", ...FILM_CATEGORIES] as const;
 
 const AIVideoSection = () => {
-  const [index, setIndex] = useState(0);
-  const perView = 1;
-  const max = GALLERY.length - perView;
-  const prev = () => setIndex((i) => Math.max(0, i - 1));
-  const next = () => setIndex((i) => Math.min(max, i + 1));
+  const [filter, setFilter] = useState<(typeof FILTERS)[number]>("All");
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const visible = useMemo(
+    () => (filter === "All" ? films : films.filter((f) => f.category === filter)),
+    [filter],
+  );
+
+  const open = (i: number, film: Film) => {
+    setOpenIndex(i);
+    track("film_open", { title: film.title, category: film.category });
+  };
 
   return (
-    <section id="ai-videos" className="relative py-24">
+    <section id="ai-videos" aria-labelledby="ai-videos-heading" className="relative py-24">
       <div className="section-container">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-12 max-w-3xl"
+          className="mb-10 max-w-3xl"
         >
-          <span className="inline-flex items-center gap-2 text-xs tracking-[0.3em] uppercase text-neon-pink font-body">
-            <Film className="w-3.5 h-3.5" /> AI Movie Creator Portfolio
+          <span className="inline-flex items-center gap-2 font-body text-xs uppercase tracking-[0.3em] text-neon-pink">
+            <FilmIcon className="h-3.5 w-3.5" aria-hidden="true" /> AI Movie Creator Portfolio
           </span>
-          <h2 className="section-title gradient-text mt-2">Cinematic AI films, made with prompts.</h2>
-          <p className="text-foreground/70 font-body mt-4">
-            Original short films and reels generated with cutting-edge AI video pipelines — direction, prompt engineering, editing & sound.
+          <h2 id="ai-videos-heading" className="section-title gradient-text mt-2">
+            Cinematic AI films, made with prompts.
+          </h2>
+          <p className="mt-4 font-body text-foreground/70">
+            Original short films, commercials and reels generated with cutting-edge AI video pipelines —
+            direction, prompt engineering, editing and sound design.
           </p>
         </motion.div>
 
-        {/* Featured */}
-        <div className="grid lg:grid-cols-[1.2fr_1fr] gap-8 items-start mb-16">
+        {/* Featured film */}
+        <div className="mb-16 grid items-start gap-8 lg:grid-cols-[1.2fr_1fr]">
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.96 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="absolute -inset-1 bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink rounded-2xl opacity-60 blur-xl" />
-            <div className="relative glass-card rounded-2xl p-4 md:p-6">
-              <div className="flex items-center justify-between mb-4">
-                <span className="inline-flex items-center gap-2 text-[10px] tracking-[0.3em] uppercase text-neon-blue font-body">
-                  <Sparkles className="w-3 h-3" /> Featured Film
+            <div
+              aria-hidden="true"
+              className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink opacity-60 blur-xl"
+            />
+            <div className="relative rounded-2xl glass-card p-4 md:p-6">
+              <div className="mb-4 flex items-center justify-between">
+                <span className="inline-flex items-center gap-2 font-body text-[10px] uppercase tracking-[0.3em] text-neon-blue">
+                  <Sparkles className="h-3 w-3" aria-hidden="true" /> Featured Film
                 </span>
-                <span className="text-[10px] tracking-widest uppercase text-muted-foreground">Now Playing</span>
+                <span className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                  {featuredFilm.category}
+                </span>
               </div>
-              <div className="rounded-xl overflow-hidden">
-                <InstagramEmbed url={FEATURED} />
+              <div className="overflow-hidden rounded-xl">
+                <video
+                  src={featuredFilm.src}
+                  poster={featuredFilm.poster}
+                  controls
+                  muted
+                  loop
+                  playsInline
+                  preload="none"
+                  aria-label={`${featuredFilm.title}, featured AI film`}
+                  onPlay={() => track("video_play", { title: featuredFilm.title, placement: "featured" })}
+                  className="aspect-video w-full rounded-xl bg-black object-cover"
+                />
               </div>
+              <p className="mt-4 font-body text-sm text-foreground/70">{featuredFilm.description}</p>
             </div>
           </motion.div>
 
           <div className="space-y-4">
             {[
-              { k: "Direction", v: "Concept, script & storyboard led end-to-end." },
-              { k: "AI Pipeline", v: "Runway, Kling, Sora-style generators + custom prompts." },
-              { k: "Post", v: "Edit, grade, sound design & motion polish." },
+              { k: "Direction", v: "Concept, script and storyboard led end-to-end." },
+              { k: "AI Pipeline", v: "Runway, Kling and Sora-style generators with custom prompt systems." },
+              { k: "Post", v: "Edit, colour grade, sound design and motion polish." },
               { k: "Distribution", v: "Optimised for Reels, Shorts and cinematic verticals." },
             ].map((r, i) => (
               <motion.div
@@ -78,65 +95,97 @@ const AIVideoSection = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                className="glass-card rounded-xl p-4"
+                className="rounded-xl glass-card p-4"
               >
-                <div className="text-[10px] tracking-[0.3em] uppercase text-neon-purple font-body mb-1">{r.k}</div>
-                <div className="text-sm text-foreground/85 font-body">{r.v}</div>
+                <div className="mb-1 font-body text-[10px] uppercase tracking-[0.3em] text-neon-purple">{r.k}</div>
+                <div className="font-body text-sm text-foreground/85">{r.v}</div>
               </motion.div>
             ))}
           </div>
         </div>
 
-        {/* Gallery slider */}
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="font-heading text-2xl md:text-3xl text-foreground tracking-wider">More AI Films</h3>
-          <div className="flex gap-2">
-            <button
-              onClick={prev}
-              disabled={index === 0}
-              className="w-10 h-10 rounded-full glass-card flex items-center justify-center hover:text-neon-blue disabled:opacity-30 transition"
-              aria-label="Previous"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={next}
-              disabled={index === max}
-              className="w-10 h-10 rounded-full glass-card flex items-center justify-center hover:text-neon-blue disabled:opacity-30 transition"
-              aria-label="Next"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
+        {/* Filters */}
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <h3 className="font-heading text-2xl tracking-wider text-foreground md:text-3xl">The Full Reel</h3>
+          <div role="group" aria-label="Filter films by category" className="flex flex-wrap gap-2">
+            {FILTERS.map((f) => (
+              <button
+                key={f}
+                type="button"
+                aria-pressed={filter === f}
+                onClick={() => {
+                  setFilter(f);
+                  track("film_filter", { category: f });
+                }}
+                className={`min-h-11 rounded-full px-4 font-body text-sm transition-all duration-300 ${
+                  filter === f
+                    ? "btn-neon text-primary-foreground"
+                    : "glass-card text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {f}
+              </button>
+            ))}
           </div>
         </div>
 
-        <div className="overflow-hidden">
-          <motion.div
-            className="flex gap-6"
-            animate={{ x: `calc(${-index * 100}% - ${index * 24}px)` }}
-            transition={{ type: "spring", stiffness: 80, damping: 20 }}
-          >
-            {GALLERY.map((url) => (
-              <div key={url} className="min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)]">
-                <div className="glass-card rounded-2xl p-3">
-                  <InstagramEmbed url={url} />
+        {/* Grid */}
+        <ul className="grid list-none grid-cols-1 gap-5 p-0 sm:grid-cols-2 lg:grid-cols-3">
+          {visible.map((film, i) => (
+            <motion.li
+              key={film.id}
+              layout
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: Math.min(i, 6) * 0.05 }}
+            >
+              {film.src ? (
+                <button
+                  type="button"
+                  onClick={() => open(i, film)}
+                  className="group relative block w-full overflow-hidden rounded-2xl glass-card p-2 text-left transition-transform duration-300 hover:-translate-y-1"
+                >
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-xl">
+                    <img
+                      src={film.poster}
+                      alt={`${film.title} — ${film.category} still frame`}
+                      loading="lazy"
+                      decoding="async"
+                      className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-0 flex items-center justify-center bg-background/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    >
+                      <span className="flex h-14 w-14 items-center justify-center rounded-full glass-card neon-glow">
+                        <Play className="h-5 w-5 text-foreground" />
+                      </span>
+                    </span>
+                  </div>
+                  <div className="px-2 py-3">
+                    <p className="font-heading text-lg tracking-wide text-foreground">{film.title}</p>
+                    <p className="font-body text-[10px] uppercase tracking-[0.25em] text-neon-blue">{film.category}</p>
+                  </div>
+                </button>
+              ) : (
+                <div className="rounded-2xl glass-card p-3">
+                  <InstagramEmbed url={film.instagramUrl!} />
                 </div>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-
-        <div className="flex justify-center gap-1.5 mt-6">
-          {GALLERY.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setIndex(Math.min(i, max))}
-              className={`h-1.5 rounded-full transition-all ${i === index ? "w-8 bg-neon-blue" : "w-1.5 bg-muted"}`}
-              aria-label={`Slide ${i + 1}`}
-            />
+              )}
+            </motion.li>
           ))}
-        </div>
+        </ul>
       </div>
+
+      <VideoLightbox
+        film={openIndex !== null ? visible[openIndex] ?? null : null}
+        onClose={() => setOpenIndex(null)}
+        onPrev={() => setOpenIndex((i) => (i === null ? i : Math.max(0, i - 1)))}
+        onNext={() => setOpenIndex((i) => (i === null ? i : Math.min(visible.length - 1, i + 1)))}
+        hasPrev={openIndex !== null && openIndex > 0}
+        hasNext={openIndex !== null && openIndex < visible.length - 1}
+      />
     </section>
   );
 };

@@ -9,56 +9,84 @@ const Particles = () => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let animationId: number;
-    const particles: { x: number; y: number; vx: number; vy: number; size: number; opacity: number; hue: number }[] = [];
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
 
+    // Fewer particles and no shadow blur on small screens keeps mobile smooth.
+    const isSmall = window.innerWidth < 768;
+    const count = isSmall ? 24 : 55;
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+
+    let animationId = 0;
+    let running = true;
+    let last = 0;
+    const frameInterval = 1000 / 30; // cap at 30fps — it's ambient decoration
+
+    const particles = Array.from({ length: count }, () => ({
+      x: Math.random(),
+      y: Math.random(),
+      vx: (Math.random() - 0.5) * 0.0004,
+      vy: (Math.random() - 0.5) * 0.0004,
+      size: Math.random() * 2 + 0.5,
+      opacity: Math.random() * 0.45 + 0.1,
+      hue: [220, 270, 330][Math.floor(Math.random() * 3)],
+    }));
+
+    let w = 0;
+    let h = 0;
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
-    window.addEventListener("resize", resize);
 
-    for (let i = 0; i < 60; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        size: Math.random() * 2 + 0.5,
-        opacity: Math.random() * 0.5 + 0.1,
-        hue: [220, 270, 330][Math.floor(Math.random() * 3)],
-      });
-    }
-
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width) p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${p.hue}, 100%, 65%, ${p.opacity})`;
-        ctx.shadowBlur = 15;
-        ctx.shadowColor = `hsla(${p.hue}, 100%, 65%, 0.5)`;
-        ctx.fill();
-      });
-      animationId = requestAnimationFrame(animate);
+    let resizeTimer = 0;
+    const onResize = () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(resize, 150);
     };
-    animate();
+    window.addEventListener("resize", onResize);
+
+    const animate = (t: number) => {
+      animationId = requestAnimationFrame(animate);
+      if (!running || t - last < frameInterval) return;
+      last = t;
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.shadowBlur = isSmall ? 0 : 12;
+      for (const p of particles) {
+        p.x = (p.x + p.vx + 1) % 1;
+        p.y = (p.y + p.vy + 1) % 1;
+        const color = `hsla(${p.hue}, 100%, 65%, ${p.opacity})`;
+        ctx.beginPath();
+        ctx.arc(p.x * w, p.y * h, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        if (!isSmall) ctx.shadowColor = color;
+        ctx.fill();
+      }
+    };
+    animationId = requestAnimationFrame(animate);
+
+    // Stop burning CPU while the tab is hidden.
+    const onVisibility = () => {
+      running = document.visibilityState === "visible";
+    };
+    document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       cancelAnimationFrame(animationId);
-      window.removeEventListener("resize", resize);
+      window.clearTimeout(resizeTimer);
+      window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" />;
+  return <canvas ref={canvasRef} aria-hidden="true" className="pointer-events-none fixed inset-0 z-0" />;
 };
 
 export default Particles;
