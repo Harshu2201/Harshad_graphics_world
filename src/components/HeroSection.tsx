@@ -53,7 +53,12 @@ const HeroSection = () => {
       </div>
 
       {/* 3D scene overlay */}
-      <Hero3D />
+      {show3D && (
+        <Suspense fallback={null}>
+          <Hero3D />
+        </Suspense>
+      )}
+
 
 
       <div className="relative z-10 text-center px-6 max-w-6xl">
@@ -76,7 +81,9 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
+          id="hero-heading"
           className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-heading leading-[0.95] mb-6"
+
         >
           <span className="text-foreground">Harshad</span>{" "}
           <span className="gradient-text neon-text">Pakhale</span>
