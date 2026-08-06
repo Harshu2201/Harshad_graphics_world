@@ -139,7 +139,40 @@
   border-radius: 3px;
 }
 
-/* Smooth scroll */
+/* Smooth scroll, offset for the fixed header when jumping to a section */
 html {
   scroll-behavior: smooth;
+}
+:target,
+section[id] {
+  scroll-margin-top: 5.5rem;
+}
+
+/* Visible keyboard focus everywhere */
+@layer base {
+  :where(a, button, input, textarea, select, [tabindex]):focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: calc(var(--radius) - 4px);
+  }
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
