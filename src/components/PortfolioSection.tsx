@@ -1,8 +1,6 @@
-import { AnimatePresence, motion } from "framer-motion";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
-import Portfolio3DCarousel from "./Portfolio3DCarousel";
-import { track } from "@/lib/analytics";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
 const portfolioItems = [
   { src: "https://lh3.googleusercontent.com/d/1-UGPuAl_Ej_BYqeh9LzFS6Hw5JZsGiDk", title: "Cinematic Poster", category: "Posters", h: "row-span-2" },
@@ -29,184 +27,107 @@ const categories = ["All", "Posters", "Branding", "Social Media Creatives", "AI 
 const PortfolioSection = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const closeRef = useRef<HTMLButtonElement>(null);
-  const restoreRef = useRef<Element | null>(null);
 
-  const filtered = useMemo(
-    () => (activeCategory === "All" ? portfolioItems : portfolioItems.filter((p) => p.category === activeCategory)),
-    [activeCategory],
-  );
+  const filtered = activeCategory === "All" ? portfolioItems : portfolioItems.filter((p) => p.category === activeCategory);
 
-  const navigate = useCallback(
-    (dir: number) => {
-      setSelectedIndex((cur) => {
-        if (cur === null) return cur;
-        const next = cur + dir;
-        return next >= 0 && next < filtered.length ? next : cur;
-      });
-    },
-    [filtered.length],
-  );
-
-  useEffect(() => {
+  const navigate = (dir: number) => {
     if (selectedIndex === null) return;
-    restoreRef.current = document.activeElement;
-    const { overflow } = document.body.style;
-    document.body.style.overflow = "hidden";
-    closeRef.current?.focus();
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelectedIndex(null);
-      if (e.key === "ArrowLeft") navigate(-1);
-      if (e.key === "ArrowRight") navigate(1);
-    };
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = overflow;
-      document.removeEventListener("keydown", onKey);
-      (restoreRef.current as HTMLElement | null)?.focus?.();
-    };
-  }, [navigate, selectedIndex]);
+    const next = selectedIndex + dir;
+    if (next >= 0 && next < filtered.length) setSelectedIndex(next);
+  };
 
   return (
-    <section id="portfolio" aria-labelledby="portfolio-heading" className="relative py-24">
+    <section id="portfolio" className="relative py-24">
       <div className="section-container">
         <motion.h2
-          id="portfolio-heading"
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          className="section-title gradient-text mb-4"
+          className="section-title gradient-text mb-6"
         >
           Portfolio
         </motion.h2>
-        <p className="mb-10 max-w-2xl font-body text-foreground/70">
-          Posters, brand systems, social creatives and AI-generated art — drag the carousel or browse the full grid.
-        </p>
-
-        {/* 3D carousel */}
-        <div className="mb-16">
-          <Portfolio3DCarousel
-            items={filtered.map(({ src, title, category }) => ({ src, title, category }))}
-            onSelect={(i) => {
-              setSelectedIndex(i);
-              track("portfolio_open", { title: filtered[i]?.title, source: "carousel" });
-            }}
-          />
-        </div>
 
         {/* Filter */}
-        <div role="group" aria-label="Filter portfolio by category" className="mb-8 flex flex-wrap gap-3">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="flex flex-wrap gap-3 mb-12"
+        >
           {categories.map((cat) => (
             <button
               key={cat}
-              type="button"
-              aria-pressed={activeCategory === cat}
-              onClick={() => {
-                setActiveCategory(cat);
-                setSelectedIndex(null);
-                track("portfolio_filter", { category: cat });
-              }}
-              className={`min-h-11 rounded-full px-4 font-body text-sm transition-all duration-300 ${
+              onClick={() => setActiveCategory(cat)}
+              className={`px-4 py-2 rounded-full text-sm font-body transition-all duration-300 ${
                 activeCategory === cat ? "btn-neon text-primary-foreground" : "glass-card text-muted-foreground hover:text-foreground"
               }`}
             >
               {cat}
             </button>
           ))}
-        </div>
+        </motion.div>
 
-        {/* Masonry grid */}
-        <ul className="grid list-none auto-rows-[200px] grid-cols-2 gap-4 p-0 md:grid-cols-3">
+        {/* Masonry Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 auto-rows-[200px]">
           {filtered.map((item, i) => (
-            <motion.li
+            <motion.div
               key={item.src}
               layout
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: Math.min(i, 8) * 0.04 }}
-              className={item.h}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ delay: i * 0.05 }}
+              className={`relative rounded-xl overflow-hidden cursor-pointer group ${item.h}`}
+              onClick={() => setSelectedIndex(i)}
             >
-              <button
-                type="button"
-                onClick={() => {
-                  setSelectedIndex(i);
-                  track("portfolio_open", { title: item.title, source: "grid" });
-                }}
-                className="group relative block size-full overflow-hidden rounded-xl"
-              >
-                <img
-                  src={item.src}
-                  alt={`${item.title} — ${item.category}`}
-                  loading="lazy"
-                  decoding="async"
-                  className="size-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <span className="absolute inset-0 flex items-end bg-gradient-to-t from-background/90 via-transparent to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  <span className="text-left">
-                    <span className="block font-heading text-xl text-foreground">{item.title}</span>
-                    <span className="block font-body text-xs text-neon-blue">{item.category}</span>
-                  </span>
-                </span>
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-0 rounded-xl border border-transparent transition-colors duration-300 group-hover:border-neon-blue/30"
-                />
-              </button>
-            </motion.li>
+              <img src={item.src} alt={item.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                <div>
+                  <p className="font-heading text-xl text-foreground">{item.title}</p>
+                  <p className="text-xs text-neon-blue font-body">{item.category}</p>
+                </div>
+              </div>
+              <div className="absolute inset-0 border border-transparent group-hover:border-neon-blue/30 rounded-xl transition-colors duration-300" />
+            </motion.div>
           ))}
-        </ul>
+        </div>
       </div>
 
       {/* Lightbox */}
       <AnimatePresence>
-        {selectedIndex !== null && filtered[selectedIndex] && (
+        {selectedIndex !== null && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            role="dialog"
-            aria-modal="true"
-            aria-label={`${filtered[selectedIndex].title} — ${filtered[selectedIndex].category}`}
             className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-md"
             onClick={() => setSelectedIndex(null)}
           >
-            <button
-              ref={closeRef}
-              type="button"
-              onClick={() => setSelectedIndex(null)}
-              aria-label="Close image viewer"
-              className="absolute right-6 top-6 flex min-h-11 min-w-11 items-center justify-center rounded-full text-foreground transition-colors hover:text-neon-pink"
-            >
-              <X className="h-7 w-7" />
+            <button onClick={() => setSelectedIndex(null)} className="absolute top-6 right-6 text-foreground hover:text-neon-pink transition-colors">
+              <X className="w-8 h-8" />
             </button>
             <button
-              type="button"
               onClick={(e) => { e.stopPropagation(); navigate(-1); }}
-              disabled={selectedIndex === 0}
-              aria-label="Previous image"
-              className="absolute left-4 flex min-h-11 min-w-11 items-center justify-center text-foreground transition-colors hover:text-neon-blue disabled:opacity-30 md:left-8"
+              className="absolute left-4 md:left-8 text-foreground hover:text-neon-blue transition-colors"
             >
-              <ChevronLeft className="h-9 w-9" />
+              <ChevronLeft className="w-10 h-10" />
             </button>
             <motion.img
               key={selectedIndex}
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
+              exit={{ opacity: 0, scale: 0.9 }}
               src={filtered[selectedIndex].src}
-              alt={`${filtered[selectedIndex].title} — ${filtered[selectedIndex].category}`}
-              className="max-h-[85vh] max-w-[90vw] rounded-xl object-contain neon-glow"
+              alt={filtered[selectedIndex].title}
+              className="max-h-[85vh] max-w-[90vw] object-contain rounded-xl neon-glow"
               onClick={(e) => e.stopPropagation()}
             />
             <button
-              type="button"
               onClick={(e) => { e.stopPropagation(); navigate(1); }}
-              disabled={selectedIndex === filtered.length - 1}
-              aria-label="Next image"
-              className="absolute right-4 flex min-h-11 min-w-11 items-center justify-center text-foreground transition-colors hover:text-neon-blue disabled:opacity-30 md:right-8"
+              className="absolute right-4 md:right-8 text-foreground hover:text-neon-blue transition-colors"
             >
-              <ChevronRight className="h-9 w-9" />
+              <ChevronRight className="w-10 h-10" />
             </button>
           </motion.div>
         )}
