@@ -67,7 +67,7 @@ const AIVideoSection = () => {
                 controls
                 playsInline
                 preload="metadata"
-                className="w-full max-h-[70vh] rounded-xl bg-muted/40 object-contain mx-auto"
+                className="w-full max-w-xs max-h-[70vh] rounded-xl bg-muted/40 object-contain mx-auto"
                 aria-label={`${featured.title} — featured AI film`}
               />
             </div>
