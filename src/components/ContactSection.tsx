@@ -86,6 +86,7 @@ const ContactSection = () => {
             <input
               type="text"
               placeholder="Your Name"
+              aria-label="Your name"
               required
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -94,6 +95,7 @@ const ContactSection = () => {
             <input
               type="email"
               placeholder="Your Email"
+              aria-label="Your email"
               required
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -101,6 +103,7 @@ const ContactSection = () => {
             />
             <textarea
               placeholder="Tell me about your idea or business challenge…"
+              aria-label="Your message"
               required
               rows={5}
               value={form.message}
