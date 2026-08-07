@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { z } from "zod";
 import { Send, Mail, MessageSquare, Linkedin, Instagram } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 const channels = [
   { icon: Mail, label: "Email", value: "harshup2205@gmail.com", href: "mailto:harshup2205@gmail.com" },
@@ -9,15 +11,32 @@ const channels = [
   { icon: MessageSquare, label: "WhatsApp", value: "+91 90675 72205", href: "https://wa.me/919067572205" },
 ];
 
+const contactSchema = z.object({
+  name: z.string().trim().min(2, "Please enter your name").max(100, "Name is too long"),
+  email: z.string().trim().email("Please enter a valid email").max(255, "Email is too long"),
+  message: z.string().trim().min(10, "Tell me a bit more (10+ characters)").max(1000, "Message is too long"),
+});
+
 const ContactSection = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const text = `Name: ${form.name}%0AEmail: ${form.email}%0AMessage: ${form.message}`;
-    window.open(`https://wa.me/919067572205?text=${text}`, "_blank");
+    const parsed = contactSchema.safeParse(form);
+    if (!parsed.success) {
+      toast({
+        title: "Check your details",
+        description: parsed.error.issues[0].message,
+        variant: "destructive",
+      });
+      return;
+    }
+    const { name, email, message } = parsed.data;
+    const text = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nMessage: ${message}`);
+    window.open(`https://wa.me/919067572205?text=${text}`, "_blank", "noopener,noreferrer");
     setForm({ name: "", email: "", message: "" });
   };
+
 
   return (
     <section id="contact" className="relative py-24">
