@@ -1,32 +1,28 @@
-import { motion } from "framer-motion";
-import { useState } from "react";
-import { ChevronLeft, ChevronRight, Film, Sparkles } from "lucide-react";
-import InstagramEmbed from "./InstagramEmbed";
-
-const FEATURED = "https://www.instagram.com/p/DaAyuGRoqFb/";
-
-const GALLERY = [
-  "https://www.instagram.com/p/DaSf25HIYcc/",
-  "https://www.instagram.com/p/C8tl7cWoH4e/",
-  "https://www.instagram.com/p/DaSlrNtlJF8/",
-  "https://www.instagram.com/p/DaXvvBJCvo9/",
-  "https://www.instagram.com/p/DaNbvIgj-s_/",
-  "https://www.instagram.com/p/DaIR0sBim57/",
-  "https://www.instagram.com/p/DZryk3NtKYV/",
-  "https://www.instagram.com/p/DaFqao-E-Ui/",
-  "https://www.instagram.com/p/DZ7VzNLAAba/",
-  "https://www.instagram.com/p/DZubIZIjj60/",
-];
+import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+import { Film as FilmIcon, Sparkles, X } from "lucide-react";
+import FilmCard from "./FilmCard";
+import { films, filmCategories, type FilmCategory } from "@/data/films";
 
 const AIVideoSection = () => {
-  const [index, setIndex] = useState(0);
-  const perView = 1;
-  const max = GALLERY.length - perView;
-  const prev = () => setIndex((i) => Math.max(0, i - 1));
-  const next = () => setIndex((i) => Math.min(max, i + 1));
+  const [active, setActive] = useState<"All" | FilmCategory>("All");
+  const [openId, setOpenId] = useState<string | null>(null);
+
+  const visible = active === "All" ? films : films.filter((f) => f.category === active);
+  const featured = films[0];
+  const opened = films.find((f) => f.id === openId) ?? null;
+
+  useEffect(() => {
+    if (!openId) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpenId(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [openId]);
 
   return (
-    <section id="ai-videos" className="relative py-24">
+    <section id="ai-videos" className="relative py-24" aria-labelledby="ai-videos-title">
       <div className="section-container">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -35,41 +31,53 @@ const AIVideoSection = () => {
           className="mb-12 max-w-3xl"
         >
           <span className="inline-flex items-center gap-2 text-xs tracking-[0.3em] uppercase text-neon-pink font-body">
-            <Film className="w-3.5 h-3.5" /> AI Movie Creator Portfolio
+            <FilmIcon className="w-3.5 h-3.5" aria-hidden /> AI Movie Creator Portfolio
           </span>
-          <h2 className="section-title gradient-text mt-2">Cinematic AI films, made with prompts.</h2>
+          <h2 id="ai-videos-title" className="section-title gradient-text mt-2">
+            Cinematic AI films, made with prompts.
+          </h2>
           <p className="text-foreground/70 font-body mt-4">
-            Original short films and reels generated with cutting-edge AI video pipelines — direction, prompt engineering, editing & sound.
+            Original short films and reels generated with AI video pipelines — direction, prompt
+            engineering, editing and sound. Every clip below streams from my own library, so it plays
+            instantly without third-party embeds.
           </p>
         </motion.div>
 
-        {/* Featured */}
-        <div className="grid lg:grid-cols-[1.2fr_1fr] gap-8 items-start mb-16">
+        {/* Featured film */}
+        <div className="grid lg:grid-cols-[1fr_1fr] gap-8 items-start mb-16">
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.96 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="absolute -inset-1 bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink rounded-2xl opacity-60 blur-xl" />
+            <div className="absolute -inset-1 bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink rounded-2xl opacity-60 blur-xl" aria-hidden />
             <div className="relative glass-card rounded-2xl p-4 md:p-6">
               <div className="flex items-center justify-between mb-4">
                 <span className="inline-flex items-center gap-2 text-[10px] tracking-[0.3em] uppercase text-neon-blue font-body">
-                  <Sparkles className="w-3 h-3" /> Featured Film
+                  <Sparkles className="w-3 h-3" aria-hidden /> Featured Film
                 </span>
-                <span className="text-[10px] tracking-widest uppercase text-muted-foreground">Now Playing</span>
+                <span className="text-[10px] tracking-widest uppercase text-muted-foreground">
+                  {featured.category}
+                </span>
               </div>
-              <div className="rounded-xl overflow-hidden">
-                <InstagramEmbed url={FEATURED} />
-              </div>
+              <video
+                src={featured.src}
+                poster={featured.poster}
+                controls
+                playsInline
+                preload="metadata"
+                className="w-full max-w-xs max-h-[70vh] rounded-xl bg-muted/40 object-contain mx-auto"
+                aria-label={`${featured.title} — featured AI film`}
+              />
             </div>
           </motion.div>
 
           <div className="space-y-4">
             {[
-              { k: "Direction", v: "Concept, script & storyboard led end-to-end." },
-              { k: "AI Pipeline", v: "Runway, Kling, Sora-style generators + custom prompts." },
-              { k: "Post", v: "Edit, grade, sound design & motion polish." },
+              { k: "Direction", v: "Concept, script and storyboard led end-to-end." },
+              { k: "AI Pipeline", v: "Runway, Kling and Sora-style generators with custom prompts." },
+              { k: "Post", v: "Edit, grade, sound design and motion polish." },
               { k: "Distribution", v: "Optimised for Reels, Shorts and cinematic verticals." },
             ].map((r, i) => (
               <motion.div
@@ -87,56 +95,68 @@ const AIVideoSection = () => {
           </div>
         </div>
 
-        {/* Gallery slider */}
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="font-heading text-2xl md:text-3xl text-foreground tracking-wider">More AI Films</h3>
-          <div className="flex gap-2">
+        {/* Category filter */}
+        <div className="flex flex-wrap gap-3 mb-8" role="group" aria-label="Filter AI films by category">
+          {filmCategories.map((cat) => (
             <button
-              onClick={prev}
-              disabled={index === 0}
-              className="w-10 h-10 rounded-full glass-card flex items-center justify-center hover:text-neon-blue disabled:opacity-30 transition"
-              aria-label="Previous"
+              key={cat}
+              type="button"
+              onClick={() => setActive(cat)}
+              aria-pressed={active === cat}
+              className={`px-4 min-h-11 rounded-full text-sm font-body transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                active === cat
+                  ? "btn-neon text-primary-foreground"
+                  : "glass-card text-muted-foreground hover:text-foreground"
+              }`}
             >
-              <ChevronLeft className="w-5 h-5" />
+              {cat}
             </button>
-            <button
-              onClick={next}
-              disabled={index === max}
-              className="w-10 h-10 rounded-full glass-card flex items-center justify-center hover:text-neon-blue disabled:opacity-30 transition"
-              aria-label="Next"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-
-        <div className="overflow-hidden">
-          <motion.div
-            className="flex gap-6"
-            animate={{ x: `calc(${-index * 100}% - ${index * 24}px)` }}
-            transition={{ type: "spring", stiffness: 80, damping: 20 }}
-          >
-            {GALLERY.map((url) => (
-              <div key={url} className="min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)]">
-                <div className="glass-card rounded-2xl p-3">
-                  <InstagramEmbed url={url} />
-                </div>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-
-        <div className="flex justify-center gap-1.5 mt-6">
-          {GALLERY.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setIndex(Math.min(i, max))}
-              className={`h-1.5 rounded-full transition-all ${i === index ? "w-8 bg-neon-blue" : "w-1.5 bg-muted"}`}
-              aria-label={`Slide ${i + 1}`}
-            />
           ))}
         </div>
+
+        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <AnimatePresence mode="popLayout">
+            {visible.map((film) => (
+              <FilmCard key={film.id} film={film} onOpen={() => setOpenId(film.id)} />
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </div>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {opened && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${opened.title} full screen player`}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-md p-4"
+            onClick={() => setOpenId(null)}
+          >
+            <button
+              type="button"
+              onClick={() => setOpenId(null)}
+              aria-label="Close player"
+              className="absolute top-4 right-4 min-h-11 min-w-11 rounded-full glass-card flex items-center justify-center text-foreground hover:text-neon-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <video
+              key={opened.id}
+              src={opened.src}
+              poster={opened.poster}
+              controls
+              autoPlay
+              playsInline
+              className="max-h-[88vh] max-w-full rounded-xl neon-glow"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

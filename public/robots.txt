@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://vfx-dream-forge.lovable.app/sitemap.xml
+Sitemap: https://harshu-graphics.lovable.app/sitemap.xml
