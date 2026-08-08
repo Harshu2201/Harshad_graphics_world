@@ -78,8 +78,13 @@ const ContactSection = () => {
                 href={c.href}
                 target={c.href.startsWith("http") ? "_blank" : undefined}
                 rel="noopener noreferrer"
+                onClick={() => {
+                  if (c.label === "WhatsApp") trackWhatsAppClick("contact_channels");
+                  trackButtonClick(`Contact: ${c.label}`, "contact");
+                }}
                 className="glass-card rounded-xl p-5 group hover:neon-glow transition-shadow duration-300"
               >
+
                 <c.icon className="w-5 h-5 text-neon-blue group-hover:text-neon-pink transition-colors mb-3" />
                 <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-body">{c.label}</p>
                 <p className="text-sm text-foreground font-body mt-1 break-all">{c.value}</p>
