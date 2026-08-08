@@ -36,7 +36,7 @@ const portfolioItems = [
   { src: "https://lh3.googleusercontent.com/d/1wO10B9gguq115ri9Q753ihAIKpoHGv8N", title: "Creative Campaign", category: "Social Media Creatives", h: "row-span-2" },
   { src: "https://lh3.googleusercontent.com/d/1f-VLpubg72IzJhZErv6CLmsuwq0x8tsH", title: "Brand Concept", category: "Branding", h: "" },
   { src: "https://lh3.googleusercontent.com/d/1kNw8zJ5DDUOg4XqBt_arl-RCs2NWojNS", title: "AI Vision", category: "AI Generated", h: "" },
-  { src: "https://lh3.googleusercontent.com/d/1f4oZ_WWBa97gjxqLsc90awBQZDNd7Eg8b4", title: "Visual Design", category: "Posters", h: "" },
+  { src: "https://lh3.googleusercontent.com/d/1f4oZ_WWBa97gjxqLscawBQZDNd7Eg8b4", title: "Visual Design", category: "Posters", h: "" },
 ];
 
 const categories = ["All", "Posters", "Branding", "Social Media Creatives", "AI Generated"];
