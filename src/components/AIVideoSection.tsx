@@ -159,9 +159,11 @@ const AIVideoSection = () => {
               controls
               autoPlay
               playsInline
+              onPlay={() => trackVideoPlay(opened.title, opened.category)}
               className="max-h-[88vh] max-w-full rounded-xl neon-glow"
               onClick={(e) => e.stopPropagation()}
             />
+
           </motion.div>
         )}
       </AnimatePresence>
