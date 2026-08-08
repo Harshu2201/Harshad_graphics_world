@@ -78,7 +78,7 @@ const FilmCard = ({ film, onOpen }: FilmCardProps) => {
             muted={muted}
             loop
             playsInline
-            preload="none"
+            preload="metadata"
             className="size-full object-cover"
             onPlay={() => {
               setPlaying(true);
