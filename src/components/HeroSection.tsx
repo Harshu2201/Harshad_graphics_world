@@ -88,10 +88,21 @@ const HeroSection = () => {
           transition={{ delay: 1 }}
           className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
         >
-          <a href="#contact" className="btn-neon text-primary-foreground inline-flex items-center justify-center gap-2">
+          <a
+            href="#contact"
+            onClick={() => trackCtaConversion("Let's Build with AI", "#contact")}
+            className="btn-neon text-primary-foreground inline-flex items-center justify-center gap-2"
+          >
             <Sparkles className="w-4 h-4" /> Let's Build with AI
           </a>
-          <a href="#services" className="btn-outline-neon">Explore Services</a>
+          <a
+            href="#services"
+            onClick={() => trackButtonClick("Explore Services", "hero")}
+            className="btn-outline-neon"
+          >
+            Explore Services
+          </a>
+
         </motion.div>
 
         {/* Stat strip */}
