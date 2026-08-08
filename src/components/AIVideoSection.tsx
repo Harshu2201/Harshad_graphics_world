@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { Film as FilmIcon, Sparkles, X } from "lucide-react";
 import FilmCard from "./FilmCard";
 import { films, filmCategories, type FilmCategory } from "@/data/films";
+import { trackVideoPlay, trackButtonClick } from "@/lib/analytics";
+
 
 const AIVideoSection = () => {
   const [active, setActive] = useState<"All" | FilmCategory>("All");
