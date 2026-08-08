@@ -106,7 +106,11 @@ const FilmCard = ({ film, onOpen }: FilmCardProps) => {
           </button>
           <button
             type="button"
-            onClick={onOpen}
+            onClick={() => {
+              trackButtonClick(`Expand film: ${film.title}`, "ai_films");
+              onOpen();
+            }}
+
             className="ml-auto text-[10px] tracking-[0.25em] uppercase font-body text-foreground/80 hover:text-neon-pink px-3 min-h-11 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg transition-colors"
             aria-label={`Open ${film.title} full screen`}
           >
