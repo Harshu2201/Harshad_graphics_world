@@ -1,6 +1,23 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import fallback1 from "@/assets/portfolio-1.jpg";
+import fallback2 from "@/assets/portfolio-2.jpg";
+import fallback3 from "@/assets/portfolio-3.jpg";
+import fallback4 from "@/assets/portfolio-4.jpg";
+import fallback5 from "@/assets/portfolio-5.jpg";
+import fallback6 from "@/assets/portfolio-6.jpg";
+
+const fallbacks = [fallback1, fallback2, fallback3, fallback4, fallback5, fallback6];
+
+/** Swaps in a bundled image if an external host fails, so tiles never render blank. */
+const handleImgError = (e: React.SyntheticEvent<HTMLImageElement>, index: number) => {
+  const img = e.currentTarget;
+  const local = fallbacks[index % fallbacks.length];
+  if (img.src !== local) img.src = local;
+};
+
+
 
 const portfolioItems = [
   { src: "https://lh3.googleusercontent.com/d/1-UGPuAl_Ej_BYqeh9LzFS6Hw5JZsGiDk", title: "Cinematic Poster", category: "Posters", h: "row-span-2" },
