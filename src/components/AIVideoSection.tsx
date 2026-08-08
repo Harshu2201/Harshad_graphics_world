@@ -105,7 +105,11 @@ const AIVideoSection = () => {
             <button
               key={cat}
               type="button"
-              onClick={() => setActive(cat)}
+              onClick={() => {
+                setActive(cat);
+                trackButtonClick(`Film filter: ${cat}`, "ai_films");
+              }}
+
               aria-pressed={active === cat}
               className={`px-4 min-h-11 rounded-full text-sm font-body transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                 active === cat
