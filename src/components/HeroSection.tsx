@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { ChevronDown, Sparkles, Film, Target, Bot } from "lucide-react";
 import Hero3D from "./Hero3D";
+import { trackButtonClick, trackCtaConversion } from "@/lib/analytics";
+
 
 const HeroSection = () => {
   return (
