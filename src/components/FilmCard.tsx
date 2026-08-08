@@ -69,9 +69,13 @@ const FilmCard = ({ film, onOpen }: FilmCardProps) => {
             playsInline
             preload="none"
             className="size-full object-cover"
-            onPlay={() => setPlaying(true)}
+            onPlay={() => {
+              setPlaying(true);
+              trackVideoPlay(film.title, film.category);
+            }}
             onPause={() => setPlaying(false)}
           />
+
         ) : (
           <img
             src={film.poster}
