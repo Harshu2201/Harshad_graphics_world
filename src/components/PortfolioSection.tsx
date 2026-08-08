@@ -1,6 +1,23 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import fallback1 from "@/assets/portfolio-1.jpg";
+import fallback2 from "@/assets/portfolio-2.jpg";
+import fallback3 from "@/assets/portfolio-3.jpg";
+import fallback4 from "@/assets/portfolio-4.jpg";
+import fallback5 from "@/assets/portfolio-5.jpg";
+import fallback6 from "@/assets/portfolio-6.jpg";
+
+const fallbacks = [fallback1, fallback2, fallback3, fallback4, fallback5, fallback6];
+
+/** Swaps in a bundled image if an external host fails, so tiles never render blank. */
+const handleImgError = (e: React.SyntheticEvent<HTMLImageElement>, index: number) => {
+  const img = e.currentTarget;
+  const local = fallbacks[index % fallbacks.length];
+  if (img.src !== local) img.src = local;
+};
+
+
 
 const portfolioItems = [
   { src: "https://lh3.googleusercontent.com/d/1-UGPuAl_Ej_BYqeh9LzFS6Hw5JZsGiDk", title: "Cinematic Poster", category: "Posters", h: "row-span-2" },
@@ -19,7 +36,7 @@ const portfolioItems = [
   { src: "https://lh3.googleusercontent.com/d/1wO10B9gguq115ri9Q753ihAIKpoHGv8N", title: "Creative Campaign", category: "Social Media Creatives", h: "row-span-2" },
   { src: "https://lh3.googleusercontent.com/d/1f-VLpubg72IzJhZErv6CLmsuwq0x8tsH", title: "Brand Concept", category: "Branding", h: "" },
   { src: "https://lh3.googleusercontent.com/d/1kNw8zJ5DDUOg4XqBt_arl-RCs2NWojNS", title: "AI Vision", category: "AI Generated", h: "" },
-  { src: "https://lh3.googleusercontent.com/d/1f4oZ_WWBa97gjxqLsc90awBQZDNd7Eg8b4", title: "Visual Design", category: "Posters", h: "" },
+  { src: "https://lh3.googleusercontent.com/d/1f4oZ_WWBa97gjxqLscawBQZDNd7Eg8b4", title: "Visual Design", category: "Posters", h: "" },
 ];
 
 const categories = ["All", "Posters", "Branding", "Social Media Creatives", "AI Generated"];
@@ -81,7 +98,7 @@ const PortfolioSection = () => {
               className={`relative rounded-xl overflow-hidden cursor-pointer group ${item.h}`}
               onClick={() => setSelectedIndex(i)}
             >
-              <img src={item.src} alt={item.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+              <img src={item.src} alt={item.title} loading="eager" decoding="async" onError={(e) => handleImgError(e, i)} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
               <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                 <div>
                   <p className="font-heading text-xl text-foreground">{item.title}</p>
@@ -121,7 +138,9 @@ const PortfolioSection = () => {
               src={filtered[selectedIndex].src}
               alt={filtered[selectedIndex].title}
               className="max-h-[85vh] max-w-[90vw] object-contain rounded-xl neon-glow"
+              onError={(e) => handleImgError(e, selectedIndex)}
               onClick={(e) => e.stopPropagation()}
+
             />
             <button
               onClick={(e) => { e.stopPropagation(); navigate(1); }}

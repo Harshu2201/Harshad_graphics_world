@@ -59,7 +59,16 @@ export const films: Film[] = [
     src: "/films/ai-film-6.mp4",
     poster: "/films/ai-film-6.jpg",
   },
+  {
+    id: "film-7",
+    title: "Signal Bloom",
+    category: "Brand Reel",
+    description: "Vertical brand film with AI-generated environments and kinetic titling.",
+    src: "/films/ai-film-7.mp4",
+    poster: "/films/ai-film-7.jpg",
+  },
 ];
+
 
 export const filmCategories: ("All" | FilmCategory)[] = [
   "All",
