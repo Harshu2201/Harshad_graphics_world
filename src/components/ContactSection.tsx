@@ -3,6 +3,12 @@ import { useState } from "react";
 import { z } from "zod";
 import { Send, Mail, MessageSquare, Linkedin, Instagram } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import {
+  trackFormSubmit,
+  trackCtaConversion,
+  trackWhatsAppClick,
+  trackButtonClick,
+} from "@/lib/analytics";
 
 const channels = [
   { icon: Mail, label: "Email", value: "harshup2205@gmail.com", href: "mailto:harshup2205@gmail.com" },
@@ -24,6 +30,7 @@ const ContactSection = () => {
     e.preventDefault();
     const parsed = contactSchema.safeParse(form);
     if (!parsed.success) {
+      trackFormSubmit("contact", "error", parsed.error.issues[0].message);
       toast({
         title: "Check your details",
         description: parsed.error.issues[0].message,
@@ -32,10 +39,14 @@ const ContactSection = () => {
       return;
     }
     const { name, email, message } = parsed.data;
+    trackFormSubmit("contact", "success");
+    trackWhatsAppClick("contact_form");
+    trackCtaConversion("Contact Form Submit", "whatsapp");
     const text = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nMessage: ${message}`);
     window.open(`https://wa.me/919067572205?text=${text}`, "_blank", "noopener,noreferrer");
     setForm({ name: "", email: "", message: "" });
   };
+
 
 
   return (
