@@ -138,7 +138,9 @@ const PortfolioSection = () => {
               src={filtered[selectedIndex].src}
               alt={filtered[selectedIndex].title}
               className="max-h-[85vh] max-w-[90vw] object-contain rounded-xl neon-glow"
+              onError={(e) => handleImgError(e, selectedIndex)}
               onClick={(e) => e.stopPropagation()}
+
             />
             <button
               onClick={(e) => { e.stopPropagation(); navigate(1); }}
