@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 import type { Film } from "@/data/films";
+import { trackVideoPlay, trackButtonClick } from "@/lib/analytics";
+
 
 interface FilmCardProps {
   film: Film;
