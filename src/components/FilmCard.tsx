@@ -24,6 +24,10 @@ const FilmCard = ({ film, onOpen }: FilmCardProps) => {
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setInView(true);
+      return;
+    }
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -31,11 +35,18 @@ const FilmCard = ({ film, onOpen }: FilmCardProps) => {
           io.disconnect();
         }
       },
-      { rootMargin: "300px" },
+      { rootMargin: "1200px" },
     );
     io.observe(el);
-    return () => io.disconnect();
+    // Safety net: if the observer never fires (edge browsers, zero-height card),
+    // attach the video anyway so the film is always playable.
+    const fallback = setTimeout(() => setInView(true), 2000);
+    return () => {
+      io.disconnect();
+      clearTimeout(fallback);
+    };
   }, []);
+
 
   const toggle = () => {
     const v = videoRef.current;
