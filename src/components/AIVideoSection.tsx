@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { Film as FilmIcon, Sparkles, X } from "lucide-react";
 import FilmCard from "./FilmCard";
 import { films, filmCategories, type FilmCategory } from "@/data/films";
+import { trackVideoPlay, trackButtonClick } from "@/lib/analytics";
+
 
 const AIVideoSection = () => {
   const [active, setActive] = useState<"All" | FilmCategory>("All");
@@ -67,9 +69,11 @@ const AIVideoSection = () => {
                 controls
                 playsInline
                 preload="metadata"
+                onPlay={() => trackVideoPlay(featured.title, "Featured")}
                 className="w-full max-w-xs max-h-[70vh] rounded-xl bg-muted/40 object-contain mx-auto"
                 aria-label={`${featured.title} — featured AI film`}
               />
+
             </div>
           </motion.div>
 
@@ -101,7 +105,11 @@ const AIVideoSection = () => {
             <button
               key={cat}
               type="button"
-              onClick={() => setActive(cat)}
+              onClick={() => {
+                setActive(cat);
+                trackButtonClick(`Film filter: ${cat}`, "ai_films");
+              }}
+
               aria-pressed={active === cat}
               className={`px-4 min-h-11 rounded-full text-sm font-body transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                 active === cat
@@ -151,9 +159,11 @@ const AIVideoSection = () => {
               controls
               autoPlay
               playsInline
+              onPlay={() => trackVideoPlay(opened.title, opened.category)}
               className="max-h-[88vh] max-w-full rounded-xl neon-glow"
               onClick={(e) => e.stopPropagation()}
             />
+
           </motion.div>
         )}
       </AnimatePresence>

@@ -3,6 +3,12 @@ import { useState } from "react";
 import { z } from "zod";
 import { Send, Mail, MessageSquare, Linkedin, Instagram } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import {
+  trackFormSubmit,
+  trackCtaConversion,
+  trackWhatsAppClick,
+  trackButtonClick,
+} from "@/lib/analytics";
 
 const channels = [
   { icon: Mail, label: "Email", value: "harshup2205@gmail.com", href: "mailto:harshup2205@gmail.com" },
@@ -24,6 +30,7 @@ const ContactSection = () => {
     e.preventDefault();
     const parsed = contactSchema.safeParse(form);
     if (!parsed.success) {
+      trackFormSubmit("contact", "error", parsed.error.issues[0].message);
       toast({
         title: "Check your details",
         description: parsed.error.issues[0].message,
@@ -32,10 +39,14 @@ const ContactSection = () => {
       return;
     }
     const { name, email, message } = parsed.data;
+    trackFormSubmit("contact", "success");
+    trackWhatsAppClick("contact_form");
+    trackCtaConversion("Contact Form Submit", "whatsapp");
     const text = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nMessage: ${message}`);
     window.open(`https://wa.me/919067572205?text=${text}`, "_blank", "noopener,noreferrer");
     setForm({ name: "", email: "", message: "" });
   };
+
 
 
   return (
@@ -67,8 +78,13 @@ const ContactSection = () => {
                 href={c.href}
                 target={c.href.startsWith("http") ? "_blank" : undefined}
                 rel="noopener noreferrer"
+                onClick={() => {
+                  if (c.label === "WhatsApp") trackWhatsAppClick("contact_channels");
+                  trackButtonClick(`Contact: ${c.label}`, "contact");
+                }}
                 className="glass-card rounded-xl p-5 group hover:neon-glow transition-shadow duration-300"
               >
+
                 <c.icon className="w-5 h-5 text-neon-blue group-hover:text-neon-pink transition-colors mb-3" />
                 <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-body">{c.label}</p>
                 <p className="text-sm text-foreground font-body mt-1 break-all">{c.value}</p>
