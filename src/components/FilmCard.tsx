@@ -91,7 +91,7 @@ const FilmCard = ({ film, onOpen }: FilmCardProps) => {
           <img
             src={film.poster}
             alt={`${film.title} — AI film still`}
-            loading="lazy"
+            loading="eager"
             decoding="async"
             className="size-full object-cover"
           />
