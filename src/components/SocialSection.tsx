@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { Instagram, Users, Heart, MessageCircle } from "lucide-react";
 
 const socials = [
+  { name: "AI with Harshu", handle: "@ai_with_harshuuu", role: "AI Creator", color: "from-neon-blue to-neon-pink", link: "https://www.instagram.com/ai_with_harshuuu/" },
+  { name: "Rebel Media", handle: "@rebelmedia.hq", role: "Media House", color: "from-neon-purple to-neon-pink", link: "https://www.instagram.com/rebelmedia.hq/" },
   { name: "Campus Counsel", handle: "@campus_counsel_", role: "Ed-Tech Community", color: "from-neon-blue to-neon-purple", link: "https://www.instagram.com/campus_counsel_/" },
   { name: "XPLOREVO", handle: "@xplorevo_official", role: "Startup Media", color: "from-neon-purple to-neon-blue", link: "https://www.instagram.com/xplorevo_official/" },
   { name: "XTN Network", handle: "@xplorevo_tech_network", role: "Tech Network", color: "from-neon-cyan to-neon-blue", link: "https://www.instagram.com/xplorevo_tech_network/" },
@@ -9,6 +11,7 @@ const socials = [
   { name: "MESWCOE EIC", handle: "@meswcoe_eic", role: "Innovation Council", color: "from-neon-pink to-neon-blue", link: "https://www.instagram.com/meswcoe_eic/" },
   { name: "Personal", handle: "@harshad.h.pakhale.01", role: "Creator", color: "from-neon-pink to-neon-purple", link: "https://www.instagram.com/harshad.h.pakhale.01/" },
 ];
+
 
 const SocialSection = () => {
   return (
