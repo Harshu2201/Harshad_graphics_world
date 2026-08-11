@@ -69,6 +69,9 @@ const Avatar = ({ social }: { social: Social }) => {
 /** Recent-post placeholder tile that always falls back to a bundled image. */
 const PostPreview = ({ index }: { index: number }) => {
   const [src, setSrc] = useState(previews[index % previews.length]);
+  useEffect(() => {
+    setSrc(previews[index % previews.length]);
+  }, [index]);
   return (
     <img
       src={src}
@@ -82,24 +85,59 @@ const PostPreview = ({ index }: { index: number }) => {
   );
 };
 
+const REFRESH_MS = 60_000;
+const SKELETON_MS = 600;
+
 const SocialSection = () => {
   // Brief skeleton for the engagement preview, then reveal the numbers.
   const [loading, setLoading] = useState(true);
+  // Bumped on each refresh cycle so previews rotate and counts re-read.
+  const [cycle, setCycle] = useState(0);
+  const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
+
   useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 600);
+    const t = setTimeout(() => {
+      setLoading(false);
+      setUpdatedAt(new Date());
+    }, SKELETON_MS);
     return () => clearTimeout(t);
+  }, [cycle]);
+
+  useEffect(() => {
+    let skeletonTimer: ReturnType<typeof setTimeout>;
+    const refresh = () => {
+      if (document.hidden) return;
+      setLoading(true);
+      setCycle((c) => c + 1);
+    };
+    const interval = setInterval(refresh, REFRESH_MS);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(skeletonTimer);
+    };
   }, []);
+
 
   return (
     <section id="social" className="relative py-24">
       <div className="section-container">
-        <motion.h2
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="section-title gradient-text mb-16"
-        >
-          Social Media
-        </motion.h2>
+        <div className="flex flex-wrap items-baseline gap-4 mb-16">
+          <motion.h2
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="section-title gradient-text mb-0"
+          >
+            Social Media
+          </motion.h2>
+          <p className="text-xs font-body text-muted-foreground" aria-live="polite">
+            {loading
+              ? "Refreshing engagement…"
+              : updatedAt
+                ? `Updated ${updatedAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
+                : ""}
+          </p>
+        </div>
+
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {socials.map((social, i) => (
@@ -130,7 +168,7 @@ const SocialSection = () => {
 
               {/* Engagement preview */}
               <div className="flex items-center gap-3 mb-4">
-                <PostPreview index={i} />
+                <PostPreview index={i + cycle} />
                 <div className="min-w-0 flex-1">
                   {loading ? (
                     <div className="space-y-2" aria-hidden>
