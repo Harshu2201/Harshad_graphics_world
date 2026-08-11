@@ -121,13 +121,23 @@ const SocialSection = () => {
   return (
     <section id="social" className="relative py-24">
       <div className="section-container">
-        <motion.h2
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="section-title gradient-text mb-16"
-        >
-          Social Media
-        </motion.h2>
+        <div className="flex flex-wrap items-baseline gap-4 mb-16">
+          <motion.h2
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="section-title gradient-text mb-0"
+          >
+            Social Media
+          </motion.h2>
+          <p className="text-xs font-body text-muted-foreground" aria-live="polite">
+            {loading
+              ? "Refreshing engagement…"
+              : updatedAt
+                ? `Updated ${updatedAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
+                : ""}
+          </p>
+        </div>
+
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {socials.map((social, i) => (
