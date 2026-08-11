@@ -168,7 +168,7 @@ const SocialSection = () => {
 
               {/* Engagement preview */}
               <div className="flex items-center gap-3 mb-4">
-                <PostPreview index={i} />
+                <PostPreview index={i + cycle} />
                 <div className="min-w-0 flex-1">
                   {loading ? (
                     <div className="space-y-2" aria-hidden>
