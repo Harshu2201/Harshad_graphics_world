@@ -69,6 +69,9 @@ const Avatar = ({ social }: { social: Social }) => {
 /** Recent-post placeholder tile that always falls back to a bundled image. */
 const PostPreview = ({ index }: { index: number }) => {
   const [src, setSrc] = useState(previews[index % previews.length]);
+  useEffect(() => {
+    setSrc(previews[index % previews.length]);
+  }, [index]);
   return (
     <img
       src={src}
@@ -82,13 +85,38 @@ const PostPreview = ({ index }: { index: number }) => {
   );
 };
 
+const REFRESH_MS = 60_000;
+const SKELETON_MS = 600;
+
 const SocialSection = () => {
   // Brief skeleton for the engagement preview, then reveal the numbers.
   const [loading, setLoading] = useState(true);
+  // Bumped on each refresh cycle so previews rotate and counts re-read.
+  const [cycle, setCycle] = useState(0);
+  const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
+
   useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 600);
+    const t = setTimeout(() => {
+      setLoading(false);
+      setUpdatedAt(new Date());
+    }, SKELETON_MS);
     return () => clearTimeout(t);
+  }, [cycle]);
+
+  useEffect(() => {
+    let skeletonTimer: ReturnType<typeof setTimeout>;
+    const refresh = () => {
+      if (document.hidden) return;
+      setLoading(true);
+      setCycle((c) => c + 1);
+    };
+    const interval = setInterval(refresh, REFRESH_MS);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(skeletonTimer);
+    };
   }, []);
+
 
   return (
     <section id="social" className="relative py-24">
