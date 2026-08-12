@@ -265,8 +265,10 @@ iframe {
   transition: opacity 0.4s ease;
 }
 html.light .hero-3d {
-  opacity: 0.35;
-  mix-blend-mode: multiply;
+  opacity: 0.3;
+}
+html.light .hero-blob {
+  opacity: 0.12;
 }
 @media (max-width: 767px) {
   .hero-3d {

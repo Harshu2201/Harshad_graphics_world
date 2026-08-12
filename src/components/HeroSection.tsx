@@ -11,13 +11,13 @@ const HeroSection = () => {
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsla(var(--neon-purple)/0.15),transparent_60%)]" />
         <motion.div
-          className="absolute top-1/4 -left-32 w-[28rem] h-[28rem] rounded-full opacity-25 blur-[120px]"
+          className="hero-blob absolute top-1/4 -left-32 w-[20rem] h-[20rem] md:w-[28rem] md:h-[28rem] rounded-full opacity-25 blur-[120px]"
           style={{ background: "hsl(var(--neon-blue))" }}
           animate={{ x: [0, 60, 0], y: [0, 40, 0] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
-          className="absolute bottom-0 -right-32 w-[28rem] h-[28rem] rounded-full opacity-25 blur-[120px]"
+          className="hero-blob absolute bottom-0 -right-32 w-[20rem] h-[20rem] md:w-[28rem] md:h-[28rem] rounded-full opacity-25 blur-[120px]"
           style={{ background: "hsl(var(--neon-purple))" }}
           animate={{ x: [0, -60, 0], y: [0, -40, 0] }}
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
