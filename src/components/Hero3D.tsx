@@ -96,14 +96,16 @@ const ParallaxRig = ({ children }: { children: React.ReactNode }) => {
 };
 
 const Hero3D = () => {
+  const small = typeof window !== "undefined" && window.innerWidth < 768;
   return (
-    <div className="absolute inset-0 pointer-events-none">
+    <div className="hero-3d absolute inset-0 pointer-events-none">
       <Canvas camera={{ position: [0, 0, 5], fov: 45 }} dpr={[1, 1.5]}>
         <Suspense fallback={null}>
           <ambientLight intensity={0.35} />
           <pointLight position={[10, 10, 10]} intensity={1.2} color="#3b82f6" />
           <pointLight position={[-10, -10, -5]} intensity={0.8} color="#ec4899" />
           <ParallaxRig>
+            <group scale={small ? 0.62 : 1}>
             <AnimatedKnot />
             <WireShell />
             <OrbitRings />
@@ -111,6 +113,7 @@ const Hero3D = () => {
             <Orb position={[2.7, -1.2, -1]} color="#ec4899" scale={0.28} />
             <Orb position={[2, 1.8, -2]} color="#7c3aed" scale={0.22} />
             <Orb position={[-2.2, -1.7, -2]} color="#22d3ee" scale={0.18} />
+            </group>
           </ParallaxRig>
           <Stars radius={40} depth={30} count={900} factor={3} saturation={0} fade speed={0.6} />
           <Environment preset="night" />

@@ -258,3 +258,21 @@ iframe {
     backdrop-filter: blur(12px);
   }
 }
+
+/* 3D scene stays subtle in light theme so headings stay readable */
+.hero-3d {
+  opacity: 0.9;
+  transition: opacity 0.4s ease;
+}
+html.light .hero-3d {
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+}
+@media (max-width: 767px) {
+  .hero-3d {
+    opacity: 0.55;
+  }
+  html.light .hero-3d {
+    opacity: 0.22;
+  }
+}
