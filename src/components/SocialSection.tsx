@@ -200,8 +200,9 @@ const SocialSection = () => {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: Math.min(i * 0.05, 0.3) }}
-              whileHover={{ scale: 1.03 }}
-              className="glass-card rounded-2xl p-6 cursor-pointer group relative overflow-hidden block"
+              whileHover={{ scale: 1.03, rotateX: 5, rotateY: -5 }}
+              transition-3d="true"
+              className="glass-card tilt-3d rounded-2xl p-5 md:p-6 cursor-pointer group relative overflow-hidden block"
             >
               <div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
@@ -217,25 +218,32 @@ const SocialSection = () => {
                 <ExternalLink className="w-4 h-4 text-muted-foreground ml-auto shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden />
               </div>
 
-              {/* Engagement preview */}
+              {/* Engagement preview — previous values stay visible while retrying */}
               <div className="flex items-center gap-3 mb-4">
                 <PostPreview index={i + cycle} />
                 <div className="min-w-0 flex-1">
-                  {loading ? (
+                  {loading && !retrying ? (
                     <div className="space-y-2" aria-hidden>
                       <div className="h-3 w-20 rounded bg-muted animate-pulse" />
                       <div className="h-3 w-28 rounded bg-muted animate-pulse" />
                     </div>
                   ) : (
-                    <>
+                    <div className={retrying ? "opacity-60 transition-opacity duration-500" : "transition-opacity duration-500"}>
                       <p className="font-heading text-base text-foreground">
-                        {social.followers} <span className="text-xs font-body text-muted-foreground">followers</span>
+                        {(stats[social.handle] ?? social).followers}{" "}
+                        <span className="text-xs font-body text-muted-foreground">followers</span>
                       </p>
-                      <p className="text-xs text-muted-foreground font-body truncate">Recent: {social.recentPost}</p>
-                    </>
+                      <p className="text-xs text-muted-foreground font-body truncate">
+                        Recent: {(stats[social.handle] ?? social).recentPost}
+                      </p>
+                      {retrying && (
+                        <div className="mt-1 h-2 w-16 rounded bg-muted animate-pulse" aria-hidden />
+                      )}
+                    </div>
                   )}
                 </div>
               </div>
+
 
               <div className="flex items-center gap-2 text-sm text-muted-foreground font-body">
                 <Users className="w-4 h-4 text-neon-blue" />
