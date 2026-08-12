@@ -201,7 +201,6 @@ const SocialSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: Math.min(i * 0.05, 0.3) }}
               whileHover={{ scale: 1.03, rotateX: 5, rotateY: -5 }}
-              transition-3d="true"
               className="glass-card tilt-3d rounded-2xl p-5 md:p-6 cursor-pointer group relative overflow-hidden block"
             >
               <div
