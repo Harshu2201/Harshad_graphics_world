@@ -87,6 +87,27 @@ const PostPreview = ({ index }: { index: number }) => {
 
 const REFRESH_MS = 60_000;
 const SKELETON_MS = 600;
+const MAX_ATTEMPTS = 4;
+const BASE_DELAY_MS = 1000;
+
+type Stats = Record<string, { followers: string; recentPost: string }>;
+
+const baselineStats: Stats = Object.fromEntries(
+  socials.map((s) => [s.handle, { followers: s.followers, recentPost: s.recentPost }]),
+);
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/** Probes reachability, then returns the engagement snapshot. Throws so the caller can retry. */
+const fetchStats = async (): Promise<Stats> => {
+  const res = await fetch(`https://unavatar.io/instagram/${socials[0].handle.replace("@", "")}`, {
+    method: "GET",
+    mode: "no-cors",
+    cache: "no-store",
+  });
+  if (res.type !== "opaque" && !res.ok) throw new Error("stats unavailable");
+  return baselineStats;
+};
 
 const SocialSection = () => {
   // Brief skeleton for the engagement preview, then reveal the numbers.
@@ -94,34 +115,60 @@ const SocialSection = () => {
   // Bumped on each refresh cycle so previews rotate and counts re-read.
   const [cycle, setCycle] = useState(0);
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
+  // Last known-good values — never cleared, so a failed fetch keeps showing them.
+  const [stats, setStats] = useState<Stats>(baselineStats);
+  const [retrying, setRetrying] = useState(false);
+  const [stale, setStale] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => {
+    let cancelled = false;
+
+    const run = async () => {
+      setLoading(true);
+      setStale(false);
+      for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+        try {
+          const next = await fetchStats();
+          if (cancelled) return;
+          setStats(next);
+          setRetrying(false);
+          setUpdatedAt(new Date());
+          await sleep(SKELETON_MS);
+          if (!cancelled) setLoading(false);
+          return;
+        } catch {
+          if (cancelled) return;
+          // Keep previous values + skeletons visible while backing off.
+          setRetrying(true);
+          await sleep(BASE_DELAY_MS * 2 ** attempt);
+        }
+      }
+      if (cancelled) return;
+      // Give up for this cycle: reveal the last known-good numbers.
+      setRetrying(false);
+      setStale(true);
       setLoading(false);
-      setUpdatedAt(new Date());
-    }, SKELETON_MS);
-    return () => clearTimeout(t);
+    };
+
+    void run();
+    return () => {
+      cancelled = true;
+    };
   }, [cycle]);
 
   useEffect(() => {
-    let skeletonTimer: ReturnType<typeof setTimeout>;
     const refresh = () => {
       if (document.hidden) return;
-      setLoading(true);
       setCycle((c) => c + 1);
     };
     const interval = setInterval(refresh, REFRESH_MS);
-    return () => {
-      clearInterval(interval);
-      clearTimeout(skeletonTimer);
-    };
+    return () => clearInterval(interval);
   }, []);
 
-
   return (
-    <section id="social" className="relative py-24">
+    <section id="social" className="relative py-16 md:py-24">
       <div className="section-container">
-        <div className="flex flex-wrap items-baseline gap-4 mb-16">
+        <div className="flex flex-wrap items-baseline gap-3 md:gap-4 mb-10 md:mb-16">
           <motion.h2
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -130,16 +177,20 @@ const SocialSection = () => {
             Social Media
           </motion.h2>
           <p className="text-xs font-body text-muted-foreground" aria-live="polite">
-            {loading
-              ? "Refreshing engagement…"
-              : updatedAt
-                ? `Updated ${updatedAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
-                : ""}
+            {retrying
+              ? "Connection hiccup — retrying…"
+              : loading
+                ? "Refreshing engagement…"
+                : stale
+                  ? "Showing last known numbers"
+                  : updatedAt
+                    ? `Updated ${updatedAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
+                    : ""}
           </p>
         </div>
 
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {socials.map((social, i) => (
             <motion.a
               key={social.handle}
@@ -149,8 +200,8 @@ const SocialSection = () => {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: Math.min(i * 0.05, 0.3) }}
-              whileHover={{ scale: 1.03 }}
-              className="glass-card rounded-2xl p-6 cursor-pointer group relative overflow-hidden block"
+              whileHover={{ scale: 1.03, rotateX: 5, rotateY: -5 }}
+              className="glass-card tilt-3d rounded-2xl p-5 md:p-6 cursor-pointer group relative overflow-hidden block"
             >
               <div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
@@ -166,25 +217,32 @@ const SocialSection = () => {
                 <ExternalLink className="w-4 h-4 text-muted-foreground ml-auto shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden />
               </div>
 
-              {/* Engagement preview */}
+              {/* Engagement preview — previous values stay visible while retrying */}
               <div className="flex items-center gap-3 mb-4">
                 <PostPreview index={i + cycle} />
                 <div className="min-w-0 flex-1">
-                  {loading ? (
+                  {loading && !retrying ? (
                     <div className="space-y-2" aria-hidden>
                       <div className="h-3 w-20 rounded bg-muted animate-pulse" />
                       <div className="h-3 w-28 rounded bg-muted animate-pulse" />
                     </div>
                   ) : (
-                    <>
+                    <div className={retrying ? "opacity-60 transition-opacity duration-500" : "transition-opacity duration-500"}>
                       <p className="font-heading text-base text-foreground">
-                        {social.followers} <span className="text-xs font-body text-muted-foreground">followers</span>
+                        {(stats[social.handle] ?? social).followers}{" "}
+                        <span className="text-xs font-body text-muted-foreground">followers</span>
                       </p>
-                      <p className="text-xs text-muted-foreground font-body truncate">Recent: {social.recentPost}</p>
-                    </>
+                      <p className="text-xs text-muted-foreground font-body truncate">
+                        Recent: {(stats[social.handle] ?? social).recentPost}
+                      </p>
+                      {retrying && (
+                        <div className="mt-1 h-2 w-16 rounded bg-muted animate-pulse" aria-hidden />
+                      )}
+                    </div>
                   )}
                 </div>
               </div>
+
 
               <div className="flex items-center gap-2 text-sm text-muted-foreground font-body">
                 <Users className="w-4 h-4 text-neon-blue" />

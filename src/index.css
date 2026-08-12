@@ -143,3 +143,138 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* ---------- Light theme ---------- */
+@layer base {
+  html.light {
+    --background: 0 0% 100%;
+    --foreground: 240 12% 12%;
+    --card: 0 0% 99%;
+    --card-foreground: 240 12% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 12% 12%;
+    --primary: 250 85% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 280 75% 50%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 240 20% 96%;
+    --muted-foreground: 240 8% 38%;
+    --accent: 320 80% 50%;
+    --accent-foreground: 0 0% 100%;
+    --border: 240 12% 88%;
+    --input: 240 12% 88%;
+    --ring: 250 85% 55%;
+
+    --neon-blue: 224 85% 48%;
+    --neon-purple: 270 75% 50%;
+    --neon-pink: 330 80% 48%;
+    --neon-cyan: 190 80% 38%;
+
+    --glass-bg: 240 30% 99% / 0.72;
+    --glass-border: 240 12% 82% / 0.9;
+    --glass-shadow: 250 60% 45% / 0.1;
+  }
+}
+
+/* Keep text legible in light theme: drop neon glows, strengthen contrast */
+html.light .neon-text {
+  text-shadow: none;
+}
+html.light .neon-glow {
+  box-shadow: 0 6px 24px hsla(var(--neon-purple) / 0.18);
+}
+html.light .glass-card {
+  backdrop-filter: blur(16px);
+}
+html.light .text-foreground\/70,
+html.light .text-foreground\/80 {
+  color: hsl(var(--foreground) / 0.85);
+}
+
+/* ---------- Smooth motion & 3D helpers ---------- */
+html {
+  scroll-behavior: smooth;
+}
+body {
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+a,
+button {
+  transition: color 0.25s ease, background-color 0.25s ease, box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer components {
+  .tilt-3d {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
+    will-change: transform;
+  }
+  .tilt-3d:hover {
+    transform: perspective(1000px) rotateX(6deg) rotateY(-6deg) translateZ(14px);
+    box-shadow: 0 24px 60px hsla(var(--neon-purple) / 0.22);
+  }
+  .float-3d {
+    animation: float 6s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---------- Mobile fit ---------- */
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+img,
+video,
+canvas,
+iframe {
+  max-width: 100%;
+}
+
+@media (max-width: 767px) {
+  .section-container {
+    @apply px-4 py-14;
+  }
+  .section-title {
+    font-size: clamp(2.25rem, 11vw, 3rem);
+    line-height: 1.05;
+  }
+  .btn-neon,
+  .btn-outline-neon {
+    @apply px-6 py-3 w-full text-center;
+  }
+  .glass-card {
+    backdrop-filter: blur(12px);
+  }
+}
+
+/* 3D scene stays subtle in light theme so headings stay readable */
+.hero-3d {
+  opacity: 0.9;
+  transition: opacity 0.4s ease;
+}
+html.light .hero-3d {
+  opacity: 0.3;
+}
+html.light .hero-blob {
+  opacity: 0.12;
+}
+@media (max-width: 767px) {
+  .hero-3d {
+    opacity: 0.55;
+  }
+  html.light .hero-3d {
+    opacity: 0.22;
+  }
+}
