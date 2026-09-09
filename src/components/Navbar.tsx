@@ -7,6 +7,7 @@ import ThemeToggle from "./ThemeToggle";
 const links = [
   { label: "About", href: "#about" },
   { label: "AI Films", href: "#ai-videos" },
+  { label: "Client Reels", href: "#client-reels" },
   { label: "Services", href: "#services" },
   { label: "Work", href: "#portfolio" },
   { label: "Social", href: "#social" },
