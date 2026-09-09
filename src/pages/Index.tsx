@@ -39,6 +39,7 @@ const Index = () => {
         <ExperienceSection />
         <WhyMeSection />
         <VisionSection />
+        <InstagramFeedSection />
         <SocialSection />
         <ContactSection />
       </main>
