@@ -11,6 +11,7 @@ import ExperienceSection from "@/components/ExperienceSection";
 import WhyMeSection from "@/components/WhyMeSection";
 import VisionSection from "@/components/VisionSection";
 import SocialSection from "@/components/SocialSection";
+import InstagramFeedSection from "@/components/InstagramFeedSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -38,6 +39,7 @@ const Index = () => {
         <ExperienceSection />
         <WhyMeSection />
         <VisionSection />
+        <InstagramFeedSection />
         <SocialSection />
         <ContactSection />
       </main>
