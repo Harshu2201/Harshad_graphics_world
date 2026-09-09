@@ -5,6 +5,7 @@ import AboutSection from "@/components/AboutSection";
 import SkillsSection from "@/components/SkillsSection";
 import ServicesSection from "@/components/ServicesSection";
 import AIVideoSection from "@/components/AIVideoSection";
+import ClientReelsSection from "@/components/ClientReelsSection";
 import PortfolioSection from "@/components/PortfolioSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import ExperienceSection from "@/components/ExperienceSection";
