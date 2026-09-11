@@ -3,24 +3,48 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import FilmCard from "@/components/FilmCard";
 import type { Film } from "@/data/films";
+import clientReel1Mp4 from "@/assets/client-reels/client-reel-1.mp4.asset.json";
+import clientReel1Jpg from "@/assets/client-reels/client-reel-1.jpg.asset.json";
+import clientReel2Mp4 from "@/assets/client-reels/client-reel-2.mp4.asset.json";
+import clientReel2Jpg from "@/assets/client-reels/client-reel-2.jpg.asset.json";
+import clientReel3Mp4 from "@/assets/client-reels/client-reel-3.mp4.asset.json";
+import clientReel3Jpg from "@/assets/client-reels/client-reel-3.jpg.asset.json";
+import clientReel4Mp4 from "@/assets/client-reels/client-reel-4.mp4.asset.json";
+import clientReel4Jpg from "@/assets/client-reels/client-reel-4.jpg.asset.json";
 
-/** Client work: AI reels delivered for brands. Self-hosted, web-optimised H.264. */
+/** Client work: AI reels delivered for brands. CDN-hosted, web-optimised H.264. */
 export const clientReels: Film[] = [
   {
     id: "client-reel-1",
     title: "Client AI Reel 01",
     category: "Brand Reel",
     description: "AI-generated brand reel delivered for a client campaign, cut for Instagram Reels.",
-    src: "/clients/client-reel-1.mp4",
-    poster: "/clients/client-reel-1.jpg",
+    src: clientReel1Mp4.url,
+    poster: clientReel1Jpg.url,
   },
   {
     id: "client-reel-2",
     title: "Client AI Reel 02",
     category: "Brand Reel",
     description: "Story-led AI reel with custom voice, motion and sound design for a client launch.",
-    src: "/clients/client-reel-2.mp4",
-    poster: "/clients/client-reel-2.jpg",
+    src: clientReel2Mp4.url,
+    poster: clientReel2Jpg.url,
+  },
+  {
+    id: "client-reel-3",
+    title: "Client AI Reel 03",
+    category: "Brand Reel",
+    description: "AI-powered product launch reel with kinetic typography and brand-first visuals.",
+    src: clientReel3Mp4.url,
+    poster: clientReel3Jpg.url,
+  },
+  {
+    id: "client-reel-4",
+    title: "Client AI Reel 04",
+    category: "Brand Reel",
+    description: "Short-form conversion reel built for Meta ads and Instagram Stories engagement.",
+    src: clientReel4Mp4.url,
+    poster: clientReel4Jpg.url,
   },
 ];
 
