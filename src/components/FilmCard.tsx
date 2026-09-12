@@ -8,13 +8,14 @@ import { trackVideoPlay, trackButtonClick } from "@/lib/analytics";
 interface FilmCardProps {
   film: Film;
   onOpen: () => void;
+  autoPlayWhenVisible?: boolean;
 }
 
 /**
  * Lightweight film card: poster-first, video source attached only once the card
  * is near the viewport so the page never downloads video it doesn't need.
  */
-const FilmCard = ({ film, onOpen }: FilmCardProps) => {
+const FilmCard = ({ film, onOpen, autoPlayWhenVisible = false }: FilmCardProps) => {
   const wrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [inView, setInView] = useState(false);
@@ -47,6 +48,24 @@ const FilmCard = ({ film, onOpen }: FilmCardProps) => {
     };
   }, []);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    const card = wrapRef.current;
+    if (!autoPlayWhenVisible || !video || !card || !inView) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.intersectionRatio >= 0.72) {
+          void video.play().catch(() => setPlaying(false));
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: [0, 0.72, 1] },
+    );
+    observer.observe(card);
+    return () => observer.disconnect();
+  }, [autoPlayWhenVisible, inView]);
+
 
   const toggle = () => {
     const v = videoRef.current;
@@ -67,7 +86,7 @@ const FilmCard = ({ film, onOpen }: FilmCardProps) => {
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
-      className="group relative glass-card rounded-2xl overflow-hidden"
+      className="group relative glass-card rounded-lg overflow-hidden h-full"
     >
       <div className="relative aspect-[9/16] bg-muted/40">
         {inView ? (
@@ -76,6 +95,7 @@ const FilmCard = ({ film, onOpen }: FilmCardProps) => {
             src={film.src}
             poster={film.poster}
             muted={muted}
+            autoPlay={autoPlayWhenVisible}
             loop
             playsInline
             preload="metadata"

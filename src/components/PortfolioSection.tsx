@@ -7,6 +7,8 @@ import fallback3 from "@/assets/portfolio-3.jpg";
 import fallback4 from "@/assets/portfolio-4.jpg";
 import fallback5 from "@/assets/portfolio-5.jpg";
 import fallback6 from "@/assets/portfolio-6.jpg";
+import AutoSlider from "@/components/AutoSlider";
+import { Button } from "@/components/ui/button";
 
 const fallbacks = [fallback1, fallback2, fallback3, fallback4, fallback5, fallback6];
 
@@ -73,20 +75,20 @@ const PortfolioSection = () => {
           className="flex flex-wrap gap-3 mb-12"
         >
           {categories.map((cat) => (
-            <button
+            <Button
               key={cat}
               onClick={() => setActiveCategory(cat)}
+              variant="outline"
               className={`px-4 py-2 rounded-full text-sm font-body transition-all duration-300 ${
                 activeCategory === cat ? "btn-neon text-primary-foreground" : "glass-card text-muted-foreground hover:text-foreground"
               }`}
             >
               {cat}
-            </button>
+            </Button>
           ))}
         </motion.div>
 
-        {/* Masonry Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 auto-rows-[200px]">
+        <AutoSlider key={activeCategory} speed={82} ariaLabel="Portfolio graphics slider">
           {filtered.map((item, i) => (
             <motion.div
               key={item.src}
@@ -95,7 +97,8 @@ const PortfolioSection = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{ delay: i * 0.05 }}
-              className={`relative rounded-xl overflow-hidden cursor-pointer group ${item.h}`}
+              whileHover={{ y: -6 }}
+              className="relative w-[82vw] max-w-[390px] md:w-[360px] shrink-0 snap-start aspect-[4/5] rounded-lg overflow-hidden cursor-pointer group glass-card"
               onClick={() => setSelectedIndex(i)}
             >
               <img src={item.src} alt={item.title} loading="eager" decoding="async" onError={(e) => handleImgError(e, i)} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
@@ -108,7 +111,7 @@ const PortfolioSection = () => {
               <div className="absolute inset-0 border border-transparent group-hover:border-neon-blue/30 rounded-xl transition-colors duration-300" />
             </motion.div>
           ))}
-        </div>
+        </AutoSlider>
       </div>
 
       {/* Lightbox */}

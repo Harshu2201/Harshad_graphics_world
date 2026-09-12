@@ -14,7 +14,7 @@ export const applyTheme = (theme: Theme) => {
 const ThemeToggle = () => {
   const [theme, setTheme] = useState<Theme>(() => {
     const stored = typeof localStorage !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
-    return stored === "light" ? "light" : "dark";
+    return stored === "dark" ? "dark" : "light";
   });
 
   useEffect(() => {
