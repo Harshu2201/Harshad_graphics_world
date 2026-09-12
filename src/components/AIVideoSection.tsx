@@ -4,6 +4,8 @@ import { Film as FilmIcon, Sparkles, X } from "lucide-react";
 import FilmCard from "./FilmCard";
 import { films, filmCategories, type FilmCategory } from "@/data/films";
 import { trackVideoPlay, trackButtonClick } from "@/lib/analytics";
+import AutoSlider from "./AutoSlider";
+import { Button } from "@/components/ui/button";
 
 
 const AIVideoSection = () => {
@@ -102,7 +104,7 @@ const AIVideoSection = () => {
         {/* Category filter */}
         <div className="flex flex-wrap gap-3 mb-8" role="group" aria-label="Filter AI films by category">
           {filmCategories.map((cat) => (
-            <button
+            <Button
               key={cat}
               type="button"
               onClick={() => {
@@ -111,22 +113,27 @@ const AIVideoSection = () => {
               }}
 
               aria-pressed={active === cat}
-              className={`px-4 min-h-11 rounded-full text-sm font-body transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+              variant="outline"
+              className={`px-4 min-h-11 rounded-full text-sm font-body transition-all duration-300 ${
                 active === cat
                   ? "btn-neon text-primary-foreground"
                   : "glass-card text-muted-foreground hover:text-foreground"
               }`}
             >
               {cat}
-            </button>
+            </Button>
           ))}
         </div>
 
-        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div layout>
           <AnimatePresence mode="popLayout">
-            {visible.map((film) => (
-              <FilmCard key={film.id} film={film} onOpen={() => setOpenId(film.id)} />
-            ))}
+            <AutoSlider key={active} speed={72} ariaLabel="AI film slider">
+              {visible.map((film) => (
+                <div key={film.id} className="w-[78vw] max-w-[310px] md:w-[300px] shrink-0 snap-start">
+                  <FilmCard film={film} onOpen={() => setOpenId(film.id)} autoPlayWhenVisible />
+                </div>
+              ))}
+            </AutoSlider>
           </AnimatePresence>
         </motion.div>
       </div>

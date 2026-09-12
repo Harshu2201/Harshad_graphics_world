@@ -7,33 +7,6 @@ import { trackButtonClick, trackCtaConversion } from "@/lib/analytics";
 const HeroSection = () => {
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* Animated gradient background */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsla(var(--neon-purple)/0.15),transparent_60%)]" />
-        <motion.div
-          className="hero-blob absolute top-1/4 -left-32 w-[20rem] h-[20rem] md:w-[28rem] md:h-[28rem] rounded-full opacity-25 blur-[120px]"
-          style={{ background: "hsl(var(--neon-blue))" }}
-          animate={{ x: [0, 60, 0], y: [0, 40, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="hero-blob absolute bottom-0 -right-32 w-[20rem] h-[20rem] md:w-[28rem] md:h-[28rem] rounded-full opacity-25 blur-[120px]"
-          style={{ background: "hsl(var(--neon-purple))" }}
-          animate={{ x: [0, -60, 0], y: [0, -40, 0] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        />
-        {/* Grid overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.07]"
-          style={{
-            backgroundImage:
-              "linear-gradient(hsl(var(--neon-blue)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--neon-blue)) 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-            maskImage: "radial-gradient(ellipse at center, black 40%, transparent 80%)",
-          }}
-        />
-      </div>
-
       {/* 3D scene overlay */}
       <Hero3D />
 

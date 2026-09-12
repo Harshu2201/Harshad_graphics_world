@@ -8,9 +8,9 @@ initAnalytics();
 // Apply the saved theme before first paint to avoid a flash.
 try {
   const stored = localStorage.getItem("hp-theme");
-  document.documentElement.classList.add(stored === "light" ? "light" : "dark");
+  document.documentElement.classList.add(stored === "dark" ? "dark" : "light");
 } catch {
-  document.documentElement.classList.add("dark");
+  document.documentElement.classList.add("light");
 }
 
 createRoot(document.getElementById("root")!).render(<App />);

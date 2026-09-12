@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface AutoSliderProps {
   children: ReactNode;
@@ -48,7 +49,8 @@ const AutoSlider = ({ children, speed = 45, ariaLabel, className = "" }: AutoSli
   const nudge = (dir: number) => {
     const el = trackRef.current;
     if (!el) return;
-    const amount = Math.max(240, el.clientWidth * 0.8);
+    const firstSlide = el.firstElementChild as HTMLElement | null;
+    const amount = firstSlide ? firstSlide.offsetWidth + 24 : Math.max(260, el.clientWidth * 0.85);
     const max = el.scrollWidth - el.clientWidth;
     let target = el.scrollLeft + dir * amount;
     if (target < 0) target = max;
@@ -62,6 +64,7 @@ const AutoSlider = ({ children, speed = 45, ariaLabel, className = "" }: AutoSli
     const el = trackRef.current;
     if (!el || e.pointerType === "mouse" && e.button !== 0) return;
     draggingRef.current = true;
+    e.currentTarget.setPointerCapture(e.pointerId);
     dragStart.current = { x: e.clientX, scroll: el.scrollLeft };
   };
   const onPointerMove = (e: React.PointerEvent) => {
@@ -88,37 +91,42 @@ const AutoSlider = ({ children, speed = 45, ariaLabel, className = "" }: AutoSli
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
-        className="flex gap-6 overflow-x-auto scroll-smooth pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-2xl"
+        className="flex gap-6 overflow-x-auto scroll-smooth pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg cursor-grab active:cursor-grabbing touch-pan-y"
       >
         {children}
       </div>
 
       <div className="mt-2 flex items-center gap-3">
-        <button
+        <Button
           type="button"
           onClick={() => nudge(-1)}
           aria-label={`Previous in ${ariaLabel}`}
-          className="min-h-11 min-w-11 rounded-full glass-card flex items-center justify-center text-foreground hover:text-neon-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors"
+          variant="outline"
+          size="icon"
+          className="min-h-11 min-w-11 rounded-full glass-card text-foreground hover:text-neon-blue"
         >
           <ChevronLeft className="w-5 h-5" />
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
           onClick={() => nudge(1)}
           aria-label={`Next in ${ariaLabel}`}
-          className="min-h-11 min-w-11 rounded-full glass-card flex items-center justify-center text-foreground hover:text-neon-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors"
+          variant="outline"
+          size="icon"
+          className="min-h-11 min-w-11 rounded-full glass-card text-foreground hover:text-neon-blue"
         >
           <ChevronRight className="w-5 h-5" />
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
           onClick={() => setPlaying((p) => !p)}
           aria-label={playing ? `Pause ${ariaLabel} auto-slide` : `Play ${ariaLabel} auto-slide`}
-          className="min-h-11 rounded-full glass-card px-4 flex items-center gap-2 text-[10px] tracking-[0.25em] uppercase font-body text-foreground/80 hover:text-neon-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors"
+          variant="outline"
+          className="min-h-11 rounded-full glass-card px-4 text-[10px] tracking-[0.25em] uppercase font-body text-foreground/80 hover:text-neon-pink"
         >
           {playing ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
           {playing ? "Auto" : "Paused"}
-        </button>
+        </Button>
         <span className="text-[10px] tracking-[0.25em] uppercase font-body text-muted-foreground hidden sm:inline">
           Swipe or drag
         </span>

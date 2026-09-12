@@ -11,6 +11,7 @@ import clientReel3Mp4 from "@/assets/client-reels/client-reel-3.mp4.asset.json";
 import clientReel3Jpg from "@/assets/client-reels/client-reel-3.jpg.asset.json";
 import clientReel4Mp4 from "@/assets/client-reels/client-reel-4.mp4.asset.json";
 import clientReel4Jpg from "@/assets/client-reels/client-reel-4.jpg.asset.json";
+import AutoSlider from "@/components/AutoSlider";
 
 /** Client work: AI reels delivered for brands. CDN-hosted, web-optimised H.264. */
 export const clientReels: Film[] = [
@@ -67,11 +68,13 @@ const ClientReelsSection = () => {
           optimised for Instagram and Meta ads.
         </p>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <AutoSlider speed={76} ariaLabel="Client AI reels slider">
           {clientReels.map((reel) => (
-            <FilmCard key={reel.id} film={reel} onOpen={() => setOpen(reel)} />
+            <div key={reel.id} className="w-[78vw] max-w-[310px] md:w-[300px] shrink-0 snap-start">
+              <FilmCard film={reel} onOpen={() => setOpen(reel)} autoPlayWhenVisible />
+            </div>
           ))}
-        </div>
+        </AutoSlider>
       </div>
 
       {open && (
