@@ -1,4 +1,3 @@
-import Particles from "@/components/Particles";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
@@ -27,7 +26,6 @@ const Index = () => {
       >
         Skip to content
       </a>
-      <Particles />
       <Navbar />
       <main>
         <HeroSection />

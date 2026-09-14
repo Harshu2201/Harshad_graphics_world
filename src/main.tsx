@@ -5,12 +5,9 @@ import { initAnalytics } from "@/lib/analytics";
 
 initAnalytics();
 
-// Apply the saved theme before first paint to avoid a flash.
-try {
-  const stored = localStorage.getItem("hp-theme");
-  document.documentElement.classList.add(stored === "dark" ? "dark" : "light");
-} catch {
-  document.documentElement.classList.add("light");
-}
+// Every new visit begins in the clean light theme. Visitors can still switch
+// theme for the current page session using the navbar control.
+document.documentElement.classList.remove("dark");
+document.documentElement.classList.add("light");
 
 createRoot(document.getElementById("root")!).render(<App />);

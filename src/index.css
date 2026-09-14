@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -25,7 +23,7 @@
     --border: 0 0% 14%;
     --input: 0 0% 14%;
     --ring: 250 100% 65%;
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
     --neon-blue: 220 100% 60%;
     --neon-purple: 270 100% 65%;
@@ -44,12 +42,14 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Avenir Next", Avenir, "Segoe UI", Helvetica, Arial, sans-serif;
     overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Bebas Neue', sans-serif;
-    letter-spacing: 0.05em;
+    font-family: "Arial Narrow", "Avenir Next Condensed", "Segoe UI", sans-serif;
+    letter-spacing: 0;
   }
 }
 
@@ -123,7 +123,8 @@
 
   .section-title {
     @apply text-5xl md:text-7xl font-bold mb-4;
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: "Arial Narrow", "Avenir Next Condensed", "Segoe UI", sans-serif;
+    letter-spacing: 0;
   }
 }
 
@@ -147,32 +148,32 @@ html {
 /* ---------- Light theme ---------- */
 @layer base {
   html.light {
-    --background: 0 0% 100%;
-    --foreground: 240 12% 12%;
-    --card: 0 0% 99%;
-    --card-foreground: 240 12% 12%;
+    --background: 210 25% 98%;
+    --foreground: 222 26% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 26% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 12% 12%;
-    --primary: 250 85% 55%;
+    --popover-foreground: 222 26% 12%;
+    --primary: 220 82% 48%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 280 75% 50%;
+    --secondary: 274 56% 48%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 240 20% 96%;
-    --muted-foreground: 240 8% 38%;
-    --accent: 320 80% 50%;
+    --muted: 214 24% 94%;
+    --muted-foreground: 218 11% 38%;
+    --accent: 336 70% 45%;
     --accent-foreground: 0 0% 100%;
-    --border: 240 12% 88%;
-    --input: 240 12% 88%;
-    --ring: 250 85% 55%;
+    --border: 216 20% 84%;
+    --input: 216 20% 84%;
+    --ring: 220 82% 48%;
 
-    --neon-blue: 224 85% 48%;
-    --neon-purple: 270 75% 50%;
-    --neon-pink: 330 80% 48%;
-    --neon-cyan: 190 80% 38%;
+    --neon-blue: 220 82% 46%;
+    --neon-purple: 274 56% 45%;
+    --neon-pink: 336 70% 43%;
+    --neon-cyan: 188 74% 34%;
 
-    --glass-bg: 240 30% 99% / 0.72;
-    --glass-border: 240 12% 82% / 0.9;
-    --glass-shadow: 250 60% 45% / 0.1;
+    --glass-bg: 0 0% 100% / 0.88;
+    --glass-border: 216 20% 82% / 0.9;
+    --glass-shadow: 220 30% 35% / 0.09;
   }
 }
 
@@ -181,10 +182,14 @@ html.light .neon-text {
   text-shadow: none;
 }
 html.light .neon-glow {
-  box-shadow: 0 6px 24px hsla(var(--neon-purple) / 0.18);
+  box-shadow: 0 10px 30px hsla(var(--glass-shadow));
 }
 html.light .glass-card {
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 8px 28px hsla(var(--glass-shadow));
+}
+html.light .gradient-text {
+  background-image: linear-gradient(120deg, hsl(var(--neon-blue)), hsl(var(--neon-purple)) 58%, hsl(var(--neon-pink)));
 }
 html.light .text-foreground\/70,
 html.light .text-foreground\/80 {
@@ -211,7 +216,7 @@ button {
     will-change: transform;
   }
   .tilt-3d:hover {
-    transform: perspective(1000px) rotateX(6deg) rotateY(-6deg) translateZ(14px);
+    transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) translateY(-4px);
     box-shadow: 0 24px 60px hsla(var(--neon-purple) / 0.22);
   }
   .float-3d {
@@ -244,7 +249,7 @@ iframe {
 
 @media (max-width: 767px) {
   .section-container {
-    @apply px-4 py-14;
+    @apply px-4 py-12;
   }
   .section-title {
     font-size: clamp(2.25rem, 11vw, 3rem);
@@ -257,6 +262,9 @@ iframe {
   .glass-card {
     backdrop-filter: blur(12px);
   }
+  .tilt-3d:hover {
+    transform: none;
+  }
 }
 
 /* 3D scene stays subtle in light theme so headings stay readable */
@@ -265,16 +273,13 @@ iframe {
   transition: opacity 0.4s ease;
 }
 html.light .hero-3d {
-  opacity: 0.3;
-}
-html.light .hero-blob {
-  opacity: 0.12;
+  opacity: 0.24;
 }
 @media (max-width: 767px) {
   .hero-3d {
     opacity: 0.55;
   }
   html.light .hero-3d {
-    opacity: 0.22;
+    opacity: 0.16;
   }
 }

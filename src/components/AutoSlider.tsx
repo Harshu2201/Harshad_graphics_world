@@ -91,7 +91,7 @@ const AutoSlider = ({ children, speed = 45, ariaLabel, className = "" }: AutoSli
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
-        className="flex gap-6 overflow-x-auto scroll-smooth pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg cursor-grab active:cursor-grabbing touch-pan-y"
+        className="flex gap-4 overflow-x-auto scroll-smooth pb-4 md:gap-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg cursor-grab active:cursor-grabbing touch-pan-y"
       >
         {children}
       </div>
