@@ -12,8 +12,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        heading: ['"Bebas Neue"', 'sans-serif'],
-        body: ['"Poppins"', 'sans-serif'],
+        heading: ['"Arial Narrow"', '"Avenir Next Condensed"', '"Segoe UI"', 'sans-serif'],
+        body: ['"Avenir Next"', 'Avenir', '"Segoe UI"', 'Helvetica', 'Arial', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

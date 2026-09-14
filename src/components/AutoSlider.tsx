@@ -20,6 +20,7 @@ const AutoSlider = ({ children, speed = 45, ariaLabel, className = "" }: AutoSli
   const [playing, setPlaying] = useState(true);
   const pausedRef = useRef(false);
   const draggingRef = useRef(false);
+  const resumeTimerRef = useRef<number | null>(null);
 
   // Automatic drift
   useEffect(() => {
@@ -55,7 +56,13 @@ const AutoSlider = ({ children, speed = 45, ariaLabel, className = "" }: AutoSli
     let target = el.scrollLeft + dir * amount;
     if (target < 0) target = max;
     if (target > max) target = 0;
+    pausedRef.current = true;
     el.scrollTo({ left: target, behavior: "smooth" });
+    if (resumeTimerRef.current !== null) window.clearTimeout(resumeTimerRef.current);
+    resumeTimerRef.current = window.setTimeout(() => {
+      pausedRef.current = false;
+      resumeTimerRef.current = null;
+    }, 650);
   };
 
   // Drag / swipe to scroll
@@ -91,7 +98,7 @@ const AutoSlider = ({ children, speed = 45, ariaLabel, className = "" }: AutoSli
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
-        className="flex gap-6 overflow-x-auto scroll-smooth pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg cursor-grab active:cursor-grabbing touch-pan-y"
+        className="flex gap-4 overflow-x-auto pb-4 md:gap-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg cursor-grab active:cursor-grabbing touch-pan-y"
       >
         {children}
       </div>
