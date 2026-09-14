@@ -203,6 +203,9 @@ html {
 body {
   transition: background-color 0.4s ease, color 0.4s ease;
 }
+section[id] {
+  scroll-margin-top: 5rem;
+}
 a,
 button {
   transition: color 0.25s ease, background-color 0.25s ease, box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
