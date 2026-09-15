@@ -31,9 +31,12 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
-          className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-heading leading-[0.95] mb-6"
+          className="mx-auto max-w-5xl text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-heading leading-[1.02] mb-6 text-balance"
         >
-          <span className="text-foreground">Harshad</span>{" "}
+          <span className="block text-base sm:text-lg md:text-xl font-body font-semibold uppercase text-muted-foreground mb-3">
+            Mr.
+          </span>
+          <span className="text-foreground">Harshad Harishchandra</span>{" "}
           <span className="gradient-text neon-text">Pakhale</span>
         </motion.h1>
 

@@ -5,7 +5,7 @@ const INTRO_TEXT = `Dear ladies and gentlemen…
 
 Welcome to the world of creativity, innovation, and cinematic design.
 
-This is the portfolio of Harshad Pakhale — a Graphic Designer, AI Content Creator, and Visual Storyteller.
+This is the portfolio of Mr. Harshad Harishchandra Pakhale — a Graphic Designer, AI Content Creator, and Visual Storyteller.
 
 With over 2 years of experience, blending art with technology, transforming ideas into powerful visual experiences.
 

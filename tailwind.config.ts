@@ -12,8 +12,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        heading: ['"Arial Narrow"', '"Avenir Next Condensed"', '"Segoe UI"', 'sans-serif'],
-        body: ['"Avenir Next"', 'Avenir', '"Segoe UI"', 'Helvetica', 'Arial', 'sans-serif'],
+        heading: ['"Trebuchet MS"', '"Avenir Next"', '"Segoe UI"', 'sans-serif'],
+        body: ['"Segoe UI Variable"', '"Avenir Next"', 'Avenir', '"Segoe UI"', 'Helvetica', 'Arial', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

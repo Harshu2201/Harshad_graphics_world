@@ -38,7 +38,7 @@ const AboutSection = () => {
             className="lg:col-span-2 relative mx-auto"
           >
             <div className="relative w-72 h-80 md:w-80 md:h-96 rounded-2xl overflow-hidden gradient-border">
-              <img src={profileImg} alt="Harshad Pakhale" className="w-full h-full object-cover" />
+              <img src={profileImg} alt="Mr. Harshad Harishchandra Pakhale" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
               <div className="absolute bottom-4 left-4 right-4">
                 <div className="glass-card rounded-lg px-3 py-2">

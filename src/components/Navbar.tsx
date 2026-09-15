@@ -40,10 +40,10 @@ const Navbar = () => {
         <Link to="/" className="flex items-center gap-2">
           <img
             src={profileImg}
-            alt="Harshad Pakhale"
+            alt="Mr. Harshad Harishchandra Pakhale"
             className="w-9 h-9 rounded-full object-cover border-2 border-neon-blue/50"
           />
-          <span className="font-heading text-xl gradient-text hidden sm:inline">Harshad</span>
+          <span className="font-heading text-base gradient-text hidden sm:inline">Mr. Harshad Pakhale</span>
         </Link>
 
         {/* Desktop */}

@@ -70,7 +70,7 @@ const AIVideoSection = () => {
                 poster={featured.poster}
                 controls
                 playsInline
-                preload="metadata"
+                preload="auto"
                 onPlay={() => trackVideoPlay(featured.title, "Featured")}
                 className="w-full max-w-xs max-h-[70vh] rounded-xl bg-muted/40 object-contain mx-auto"
                 aria-label={`${featured.title} — featured AI film`}
@@ -165,6 +165,7 @@ const AIVideoSection = () => {
               poster={opened.poster}
               controls
               autoPlay
+              muted
               playsInline
               onPlay={() => trackVideoPlay(opened.title, opened.category)}
               className="max-h-[88vh] max-w-full rounded-xl neon-glow"
