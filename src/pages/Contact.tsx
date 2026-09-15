@@ -70,7 +70,7 @@ const Contact = () => {
   const [sent, setSent] = useState(false);
 
   useEffect(() => {
-    document.title = "Book a Call — Harshad Pakhale | AI Video & Meta Ads";
+    document.title = "Book a Call — Mr. Harshad Harishchandra Pakhale";
     trackPageView("/contact");
   }, []);
 
@@ -311,7 +311,7 @@ const Contact = () => {
               className="space-y-4"
             >
               <a
-                href={whatsappHref("Hi Harshad! I'd like to book a call about a project.")}
+                href={whatsappHref("Hi Mr. Harshad Harishchandra Pakhale! I'd like to book a call about a project.")}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => {

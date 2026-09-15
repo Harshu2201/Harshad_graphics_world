@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 import type { Film } from "@/data/films";
 import { trackVideoPlay, trackButtonClick } from "@/lib/analytics";
+import { Button } from "@/components/ui/button";
 
 
 interface FilmCardProps {
@@ -12,59 +13,32 @@ interface FilmCardProps {
 }
 
 /**
- * Lightweight film card: poster-first, video source attached only once the card
- * is near the viewport so the page never downloads video it doesn't need.
+ * Poster-first film card. The source is present from the first render so browser
+ * metadata and the first frame can be prepared before the slider enters view.
  */
 const FilmCard = ({ film, onOpen, autoPlayWhenVisible = false }: FilmCardProps) => {
   const wrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [inView, setInView] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
 
   useEffect(() => {
-    const el = wrapRef.current;
-    if (!el) return;
-    if (typeof IntersectionObserver === "undefined") {
-      setInView(true);
-      return;
-    }
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          io.disconnect();
-        }
-      },
-      { rootMargin: "1200px" },
-    );
-    io.observe(el);
-    // Safety net: if the observer never fires (edge browsers, zero-height card),
-    // attach the video anyway so the film is always playable.
-    const fallback = setTimeout(() => setInView(true), 2000);
-    return () => {
-      io.disconnect();
-      clearTimeout(fallback);
-    };
-  }, []);
-
-  useEffect(() => {
     const video = videoRef.current;
     const card = wrapRef.current;
-    if (!autoPlayWhenVisible || !video || !card || !inView) return;
+    if (!autoPlayWhenVisible || !video || !card) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.intersectionRatio >= 0.72) {
+        if (entry.intersectionRatio >= 0.5) {
           void video.play().catch(() => setPlaying(false));
         } else {
           video.pause();
         }
       },
-      { threshold: [0, 0.72, 1] },
+      { threshold: [0, 0.5, 1] },
     );
     observer.observe(card);
     return () => observer.disconnect();
-  }, [autoPlayWhenVisible, inView]);
+  }, [autoPlayWhenVisible]);
 
 
   const toggle = () => {
@@ -89,70 +63,63 @@ const FilmCard = ({ film, onOpen, autoPlayWhenVisible = false }: FilmCardProps) 
       className="group relative glass-card rounded-lg overflow-hidden h-full"
     >
       <div className="relative aspect-[9/16] bg-muted/40">
-        {inView ? (
-          <video
-            ref={videoRef}
-            src={film.src}
-            poster={film.poster}
-            muted={muted}
-            autoPlay={autoPlayWhenVisible}
-            loop
-            playsInline
-            preload="metadata"
-            className="size-full object-cover"
-            onPlay={() => {
-              setPlaying(true);
-              trackVideoPlay(film.title, film.category);
-            }}
-            onPause={() => setPlaying(false)}
-          />
-
-        ) : (
-          <img
-            src={film.poster}
-            alt={`${film.title} — AI film still`}
-            loading="eager"
-            decoding="async"
-            className="size-full object-cover"
-          />
-        )}
+        <video
+          ref={videoRef}
+          src={film.src}
+          poster={film.poster}
+          muted={muted}
+          autoPlay={autoPlayWhenVisible}
+          loop
+          playsInline
+          preload="metadata"
+          className="size-full object-cover"
+          onPlay={() => {
+            setPlaying(true);
+            trackVideoPlay(film.title, film.category);
+          }}
+          onPause={() => setPlaying(false)}
+        />
 
         {/* Controls */}
         <div className="absolute inset-x-0 bottom-0 p-3 flex items-center gap-2 bg-gradient-to-t from-background/90 to-transparent">
-          <button
+          <Button
             type="button"
             onClick={toggle}
             aria-label={playing ? `Pause ${film.title}` : `Play ${film.title}`}
-            className="min-h-11 min-w-11 rounded-full glass-card flex items-center justify-center text-foreground hover:text-neon-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors"
+            variant="outline"
+            size="icon"
+            className="min-h-11 min-w-11 rounded-full glass-card text-foreground hover:text-neon-blue"
           >
             {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             onClick={() => setMuted((m) => !m)}
             aria-label={muted ? `Unmute ${film.title}` : `Mute ${film.title}`}
-            className="min-h-11 min-w-11 rounded-full glass-card flex items-center justify-center text-foreground hover:text-neon-purple focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors"
+            variant="outline"
+            size="icon"
+            className="min-h-11 min-w-11 rounded-full glass-card text-foreground hover:text-neon-purple"
           >
             {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             onClick={() => {
               trackButtonClick(`Expand film: ${film.title}`, "ai_films");
               onOpen();
             }}
-
-            className="ml-auto text-[10px] tracking-[0.25em] uppercase font-body text-foreground/80 hover:text-neon-pink px-3 min-h-11 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg transition-colors"
+            variant="ghost"
+            className="ml-auto text-xs uppercase font-body text-foreground/80 hover:text-neon-pink"
             aria-label={`Open ${film.title} full screen`}
           >
             Expand
-          </button>
+          </Button>
         </div>
       </div>
 
       <div className="p-4">
         <p className="text-[10px] tracking-[0.3em] uppercase text-neon-purple font-body">{film.category}</p>
-        <h3 className="font-heading text-xl text-foreground tracking-wider mt-1">{film.title}</h3>
+        <h3 className="font-heading text-xl text-foreground mt-1">{film.title}</h3>
         <p className="text-sm text-foreground/70 font-body mt-1">{film.description}</p>
       </div>
     </motion.article>

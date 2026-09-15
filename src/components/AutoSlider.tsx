@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -22,32 +22,7 @@ const AutoSlider = ({ children, speed = 45, ariaLabel, className = "" }: AutoSli
   const draggingRef = useRef(false);
   const resumeTimerRef = useRef<number | null>(null);
 
-  // Automatic drift
-  useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
-    if (!playing) return;
-
-    let raf = 0;
-    let last = performance.now();
-    const step = (now: number) => {
-      const dt = (now - last) / 1000;
-      last = now;
-      if (!pausedRef.current && !draggingRef.current) {
-        const max = el.scrollWidth - el.clientWidth;
-        if (max > 4) {
-          const next = el.scrollLeft + speed * dt;
-          el.scrollLeft = next >= max - 1 ? 0 : next;
-        }
-      }
-      raf = requestAnimationFrame(step);
-    };
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
-  }, [playing, speed]);
-
-  const nudge = (dir: number) => {
+  const nudge = useCallback((dir: number, smooth = true) => {
     const el = trackRef.current;
     if (!el) return;
     const firstSlide = el.firstElementChild as HTMLElement | null;
@@ -56,14 +31,30 @@ const AutoSlider = ({ children, speed = 45, ariaLabel, className = "" }: AutoSli
     let target = el.scrollLeft + dir * amount;
     if (target < 0) target = max;
     if (target > max) target = 0;
-    pausedRef.current = true;
-    el.scrollTo({ left: target, behavior: "smooth" });
+    el.scrollTo({ left: target, behavior: smooth ? "smooth" : "auto" });
+    if (smooth) {
+      pausedRef.current = true;
+      if (resumeTimerRef.current !== null) window.clearTimeout(resumeTimerRef.current);
+      resumeTimerRef.current = window.setTimeout(() => {
+        pausedRef.current = false;
+        resumeTimerRef.current = null;
+      }, 650);
+    }
+  }, []);
+
+  // Snap to the next full card on a reliable cadence. Tiny continuous changes
+  // are intentionally avoided because mandatory CSS snapping cancels them.
+  useEffect(() => {
+    if (!playing || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    const interval = window.setInterval(() => {
+      if (!pausedRef.current && !draggingRef.current) nudge(1, true);
+    }, Math.max(2200, 4200 - speed * 20));
+    return () => window.clearInterval(interval);
+  }, [nudge, playing, speed]);
+
+  useEffect(() => () => {
     if (resumeTimerRef.current !== null) window.clearTimeout(resumeTimerRef.current);
-    resumeTimerRef.current = window.setTimeout(() => {
-      pausedRef.current = false;
-      resumeTimerRef.current = null;
-    }, 650);
-  };
+  }, []);
 
   // Drag / swipe to scroll
   const dragStart = useRef({ x: 0, scroll: 0 });
@@ -98,7 +89,7 @@ const AutoSlider = ({ children, speed = 45, ariaLabel, className = "" }: AutoSli
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
-        className="flex gap-4 overflow-x-auto pb-4 md:gap-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg cursor-grab active:cursor-grabbing touch-pan-y"
+        className="flex gap-4 overflow-x-auto pb-4 md:gap-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg cursor-grab active:cursor-grabbing touch-pan-y"
       >
         {children}
       </div>

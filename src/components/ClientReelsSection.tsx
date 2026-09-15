@@ -98,6 +98,7 @@ const ClientReelsSection = () => {
             poster={open.poster}
             controls
             autoPlay
+            muted
             playsInline
             onClick={(e) => e.stopPropagation()}
             className="max-h-[88vh] w-auto max-w-full rounded-2xl"

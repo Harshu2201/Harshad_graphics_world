@@ -15,7 +15,7 @@ const Footer = () => {
       <Footer3D />
       <div className="relative max-w-7xl mx-auto px-6 py-14 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="text-center md:text-left">
-          <p className="font-heading text-2xl gradient-text tracking-wider">Harshad Pakhale</p>
+          <p className="font-heading text-2xl gradient-text">Mr. Harshad Harishchandra Pakhale</p>
           <p className="text-xs text-muted-foreground font-body tracking-widest uppercase mt-1">
             AI Generalist · Creative Strategist
           </p>
@@ -43,7 +43,7 @@ const Footer = () => {
         </div>
 
         <p className="text-xs text-muted-foreground font-body">
-          © {new Date().getFullYear()} Harshad Pakhale. Built with AI + execution.
+          © {new Date().getFullYear()} Mr. Harshad Harishchandra Pakhale. Built with AI + execution.
         </p>
       </div>
     </footer>
