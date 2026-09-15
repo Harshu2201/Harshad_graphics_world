@@ -126,7 +126,7 @@ const AIVideoSection = () => {
         </div>
 
         <motion.div layout>
-          <AnimatePresence mode="popLayout">
+          <AnimatePresence mode="wait">
             <AutoSlider key={active} speed={72} ariaLabel="AI film slider">
               {visible.map((film) => (
                 <div key={film.id} className="w-[78vw] max-w-[310px] md:w-[300px] shrink-0 snap-start">

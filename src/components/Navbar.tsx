@@ -43,7 +43,7 @@ const Navbar = () => {
             alt="Mr. Harshad Harishchandra Pakhale"
             className="w-9 h-9 rounded-full object-cover border-2 border-neon-blue/50"
           />
-          <span className="font-heading text-base gradient-text hidden sm:inline">Mr. Harshad Pakhale</span>
+          <span className="font-heading text-sm gradient-text hidden lg:inline">Mr. Harshad Harishchandra Pakhale</span>
         </Link>
 
         {/* Desktop */}
