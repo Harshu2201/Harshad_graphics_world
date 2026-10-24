@@ -50,6 +50,33 @@ export type Database = {
         }
         Relationships: []
       }
+      client_leads: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          phone: string
+          source: string
+          want_ugc: boolean
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          phone: string
+          source?: string
+          want_ugc?: boolean
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          phone?: string
+          source?: string
+          want_ugc?: boolean
+        }
+        Relationships: []
+      }
       instagram_reels: {
         Row: {
           caption: string | null
