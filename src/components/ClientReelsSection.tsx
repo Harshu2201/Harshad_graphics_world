@@ -19,6 +19,7 @@ import clientReel6Jpg from "@/assets/client-reels/client-reel-6.jpg.asset.json";
 import clientReel7Mp4 from "@/assets/client-reels/client-reel-7.mp4.asset.json";
 import clientReel7Jpg from "@/assets/client-reels/client-reel-7.jpg.asset.json";
 import AutoSlider from "@/components/AutoSlider";
+import { trackCtaConversion } from "@/lib/analytics";
 
 /** Client work: AI reels delivered for brands. CDN-hosted, web-optimised H.264. */
 export const clientReels: Film[] = [
