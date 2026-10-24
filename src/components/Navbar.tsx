@@ -48,16 +48,27 @@ const Navbar = () => {
 
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-7">
-          {links.map((l) => (
-            <a
-              key={l.label}
-              href={hrefFor(l.hash)}
-              className="text-sm font-body text-muted-foreground hover:text-foreground transition-colors relative group"
-            >
-              {l.label}
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-neon-blue group-hover:w-full transition-all duration-300" />
-            </a>
-          ))}
+          {links.map((l) =>
+            l.route ? (
+              <Link
+                key={l.label}
+                to={l.route}
+                className="text-sm font-body text-muted-foreground hover:text-foreground transition-colors relative group"
+              >
+                {l.label}
+                <span className="absolute -bottom-1 left-0 w-0 h-px bg-neon-blue group-hover:w-full transition-all duration-300" />
+              </Link>
+            ) : (
+              <a
+                key={l.label}
+                href={hrefFor(l.hash)}
+                className="text-sm font-body text-muted-foreground hover:text-foreground transition-colors relative group"
+              >
+                {l.label}
+                <span className="absolute -bottom-1 left-0 w-0 h-px bg-neon-blue group-hover:w-full transition-all duration-300" />
+              </a>
+            )
+          )}
           <Link
             to="/contact"
             className="text-sm font-body inline-flex items-center gap-2 px-4 py-2 rounded-lg text-primary-foreground"
@@ -89,16 +100,27 @@ const Navbar = () => {
           className="md:hidden glass-card border-t border-border"
         >
           <div className="flex flex-col px-6 py-4 gap-4">
-            {links.map((l) => (
-              <a
-                key={l.label}
-                href={hrefFor(l.hash)}
-                onClick={() => setOpen(false)}
-                className="text-sm font-body text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {l.label}
-              </a>
-            ))}
+            {links.map((l) =>
+              l.route ? (
+                <Link
+                  key={l.label}
+                  to={l.route}
+                  onClick={() => setOpen(false)}
+                  className="text-sm font-body text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {l.label}
+                </Link>
+              ) : (
+                <a
+                  key={l.label}
+                  href={hrefFor(l.hash)}
+                  onClick={() => setOpen(false)}
+                  className="text-sm font-body text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {l.label}
+                </a>
+              )
+            )}
             <Link
               to="/contact"
               onClick={() => setOpen(false)}
