@@ -13,7 +13,7 @@ import aiFilm6Jpg from "@/assets/films/ai-film-6.jpg.asset.json";
 import aiFilm7Mp4 from "@/assets/films/ai-film-7.mp4.asset.json";
 import aiFilm7Jpg from "@/assets/films/ai-film-7.jpg.asset.json";
 
-export type FilmCategory = "Cinematic" | "Brand Reel" | "Concept" | "Social Ad";
+export type FilmCategory = "Cinematic" | "Brand Reel" | "Concept" | "Social Ad" | "UGC Reel";
 
 export interface Film {
   id: string;
