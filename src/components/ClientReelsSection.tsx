@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { X } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowRight, X } from "lucide-react";
 import FilmCard from "@/components/FilmCard";
 import type { Film } from "@/data/films";
 import clientReel1Mp4 from "@/assets/client-reels/client-reel-1.mp4.asset.json";
@@ -105,6 +106,20 @@ const ClientReelsSection = () => {
             </div>
           ))}
         </AutoSlider>
+
+        <div className="mt-8 text-center">
+          <Link
+            to="/client-reels"
+            className="btn-neon text-primary-foreground inline-flex items-center gap-2 px-6 py-3 rounded-xl font-body"
+            onClick={() => trackCtaConversion("Client Reels Page CTA", "internal")}
+          >
+            See all client reels &amp; get yours <ArrowRight className="w-4 h-4" />
+          </Link>
+          <p className="mt-3 text-xs text-muted-foreground font-body">
+            Customised UGC AI content with a face character sheet — price discussed directly on
+            WhatsApp.
+          </p>
+        </div>
       </div>
 
       {open && (
