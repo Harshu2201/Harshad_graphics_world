@@ -8,7 +8,7 @@ import ThemeToggle from "./ThemeToggle";
 const links = [
   { label: "About", hash: "#about" },
   { label: "AI Films", hash: "#ai-videos" },
-  { label: "Client Reels", hash: "#client-reels" },
+  { label: "Client Reels", hash: "#client-reels", route: "/client-reels" },
   { label: "Services", hash: "#services" },
   { label: "Work", hash: "#portfolio" },
   { label: "Social", hash: "#social" },
