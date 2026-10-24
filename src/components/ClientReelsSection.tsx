@@ -11,6 +11,12 @@ import clientReel3Mp4 from "@/assets/client-reels/client-reel-3.mp4.asset.json";
 import clientReel3Jpg from "@/assets/client-reels/client-reel-3.jpg.asset.json";
 import clientReel4Mp4 from "@/assets/client-reels/client-reel-4.mp4.asset.json";
 import clientReel4Jpg from "@/assets/client-reels/client-reel-4.jpg.asset.json";
+import clientReel5Mp4 from "@/assets/client-reels/client-reel-5.mp4.asset.json";
+import clientReel5Jpg from "@/assets/client-reels/client-reel-5.jpg.asset.json";
+import clientReel6Mp4 from "@/assets/client-reels/client-reel-6.mp4.asset.json";
+import clientReel6Jpg from "@/assets/client-reels/client-reel-6.jpg.asset.json";
+import clientReel7Mp4 from "@/assets/client-reels/client-reel-7.mp4.asset.json";
+import clientReel7Jpg from "@/assets/client-reels/client-reel-7.jpg.asset.json";
 import AutoSlider from "@/components/AutoSlider";
 
 /** Client work: AI reels delivered for brands. CDN-hosted, web-optimised H.264. */
@@ -46,6 +52,30 @@ export const clientReels: Film[] = [
     description: "Short-form conversion reel built for Meta ads and Instagram Stories engagement.",
     src: clientReel4Mp4.url,
     poster: clientReel4Jpg.url,
+  },
+  {
+    id: "client-reel-5",
+    title: "Amoha Herbals — AI UGC Reel 01",
+    category: "UGC Reel",
+    description: "Customized AI UGC content created for Amoha Herbals with a consistent face character.",
+    src: clientReel5Mp4.url,
+    poster: clientReel5Jpg.url,
+  },
+  {
+    id: "client-reel-6",
+    title: "Amoha Herbals — AI UGC Reel 02",
+    category: "UGC Reel",
+    description: "Story-led AI UGC reel for Amoha Herbals, scripted and generated end-to-end.",
+    src: clientReel6Mp4.url,
+    poster: clientReel6Jpg.url,
+  },
+  {
+    id: "client-reel-7",
+    title: "Veripeers — AI UGC Reel",
+    category: "UGC Reel",
+    description: "Conversion-focused AI UGC reel produced for Veripeers, ready for Meta ads.",
+    src: clientReel7Mp4.url,
+    poster: clientReel7Jpg.url,
   },
 ];
 
