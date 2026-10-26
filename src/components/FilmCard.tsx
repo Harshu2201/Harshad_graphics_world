@@ -30,14 +30,11 @@ const FilmCard = ({ film, onOpen, autoPlayWhenVisible = false }: FilmCardProps) 
       ([entry]) => {
         if (entry.intersectionRatio >= 0.5) {
           void video.play().catch(() => setPlaying(false));
-        } else if (entry.intersectionRatio > 0) {
-          // Start buffering as soon as any part of the card is visible so the
-          // first frame is ready before the card becomes fully playable.
-          if (video.preload !== "auto") {
-            video.preload = "auto";
-            video.load();
-          }
         } else {
+          // Cards below the play threshold stay on cheap metadata preloading.
+          // The auto-sliders drift every card through the viewport, so eagerly
+          // buffering partially-visible cards would download the whole library
+          // (~20 MB) on page open and delay the videos users actually watch.
           video.pause();
         }
       },
