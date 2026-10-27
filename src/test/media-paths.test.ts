@@ -34,8 +34,10 @@ describe("bundled media paths (deployment-safe)", () => {
 
   it("every referenced media file exists under public/", () => {
     for (const film of allFilms) {
-      expect(existsSync(resolve("public", film.src)), `${film.id} src file`).toBe(true);
-      expect(existsSync(resolve("public", film.poster)), `${film.id} poster file`).toBe(true);
+      // strip the leading "/" so paths join under public/ instead of resetting to root
+      const rel = (p: string) => p.replace(/^\//, "");
+      expect(existsSync(resolve("public", rel(film.src))), `${film.id} src file`).toBe(true);
+      expect(existsSync(resolve("public", rel(film.poster))), `${film.id} poster file`).toBe(true);
     }
   });
 
